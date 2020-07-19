@@ -36,6 +36,11 @@ public struct Fraction
         return new Fraction(f.numerator / hcf, f.denominator / hcf);
     }
 
+    public static Fraction Recipocal(Fraction f)
+    {
+        return new Fraction(f.denominator, f.numerator);
+    }
+
     public static Fraction operator *(Fraction a, Fraction b)
     {
         return Simplify(new Fraction(a.numerator * b.numerator, a.denominator * b.denominator));
@@ -66,5 +71,16 @@ public struct Fraction
             total += fraction;
         }
         return total;
+    }
+
+    public static Fraction[] Normalise(Fraction[] arr)
+    {
+        Fraction sum = Sum(arr);
+        Fraction[] newArr = new Fraction[arr.Length];
+        for(int i = 0; i < arr.Length; i++)
+        {
+            newArr[i] = Simplify(arr[i] * Recipocal(sum));
+        }
+        return newArr;
     }
 }

@@ -41,12 +41,48 @@ public class Flower
     }
 
     /// <summary>
-    /// Get the offspring of breeding this flower with another flower.
-    /// Offspring will have all possible genetic codes with the probabilities of getting them.
+    /// Gets the possible offspring of two parents if the colour is already determined.
     /// </summary>
-    /// <param name="other">The flower to breed with</param>
+    /// <param name="other"></param>
+    /// <param name="colour"></param>
     /// <returns></returns>
-    public Flower BreedWith(Flower other)
+    public Flower GetOffspringWithColour(Flower other, FlowerColour colour)
+    {
+        if (type != other.type)
+        {
+            return PredefinedFlowers.noFlower;
+        }
+
+        Flower possibleChildren = BreedWith(other);
+
+        List<Gene[]> childrenColGenes = new List<Gene[]>();
+        List<Fraction> childrenColProb = new List<Fraction>();
+
+        for (int i = 0; i < possibleChildren.genesPoss.Length; i++)
+        {
+
+            Gene[] genes = possibleChildren.genesPoss[i];
+            FlowerColour geneColour = FlowerColourLookup.lookup.colourLookup[type][Gene.getString(genes)];
+
+            if (geneColour == colour)
+            {
+                childrenColGenes.Add(genes);
+                childrenColProb.Add(possibleChildren.genesProbs[i]);
+            }
+                
+        }
+
+        return new Flower(childrenColGenes.ToArray(), Fraction.Normalise(childrenColProb.ToArray()), type, colour);
+    }
+
+
+        /// <summary>
+        /// Get the offspring of breeding this flower with another flower.
+        /// Offspring will have all possible genetic codes with the probabilities of getting them.
+        /// </summary>
+        /// <param name="other">The flower to breed with</param>
+        /// <returns></returns>
+        public Flower BreedWith(Flower other)
     {
         if (type != other.type)
         {
@@ -123,6 +159,8 @@ public class Flower
         return (childPoss, childProb);
     
     }
+
+
 
 
 }

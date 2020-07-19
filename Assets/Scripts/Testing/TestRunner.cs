@@ -8,11 +8,8 @@ public class TestRunner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        TestCaseHard();
-
-
-       
+        TestCaseEasy();
+        TestCaseColour();
     }
 
     void TestCaseEasy()
@@ -21,8 +18,6 @@ public class TestRunner : MonoBehaviour
         Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
         Flower childFlower = flower1.BreedWith(flower2);
         Debug.Log(childFlower);
-
-
     }
 
     void TestCaseHard()
@@ -47,8 +42,14 @@ public class TestRunner : MonoBehaviour
         Flower childFlower2 = flower2.BreedWith(flower1);
         Debug.Log(childFlower2);
         Debug.Log(Fraction.Sum(childFlower2.genesProbs));
-        
-        
+    }
+
+    void TestCaseColour()
+    {
+        Flower flower1 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
+        Flower childFlower = flower1.GetOffspringWithColour(flower2, FlowerColour.GREEN);
+        print(childFlower);
     }
 
     // Update is called once per frame
