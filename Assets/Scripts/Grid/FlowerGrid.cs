@@ -12,7 +12,7 @@ public class FlowerGrid : MonoBehaviour
 
     public static bool InGrid(int x, int y)
     {
-        return !(x < 0 || x > GRIDWIDTH || y < 0 || y > GRIDHEIGHT);
+        return x >= 0 && x < GRIDWIDTH && y >= 0 && y < GRIDHEIGHT;
     }
 
     public static (List<int>, List<int>) getAdjacentSquares(int x, int y)
@@ -25,14 +25,17 @@ public class FlowerGrid : MonoBehaviour
 
         for (int i = 0; i < xadj.Length; i++)
         {
-            if(InGrid(xadj[i], yadj[i]))
+            int xval = xadj[i];
+            int yval = yadj[i];
+
+            if (InGrid(xval, yval))
             {
-                xadjInBounds.Add(xadj[i]);
-                yadjInBounds.Add(yadj[i]);
+                xadjInBounds.Add(xval);
+                yadjInBounds.Add(yval);
             }   
         }
 
-        return (xadjInBounds, xadjInBounds);
+        return (xadjInBounds, yadjInBounds);
 
 
     }
@@ -106,6 +109,18 @@ public class FlowerGrid : MonoBehaviour
 
     public Dictionary<string, List<Flower>> GetPossibleParents(FlowerType type, FlowerColour colour, int x, int y)
     {
+        (List<int> primaryParentXs, List<int> primaryParentYs) = getAdjacentSquares(x, y);
+        for(int i = 0; i < primaryParentXs.Count; i++)
+        {
+            int parent1x = primaryParentXs[i];
+            int parent1y = primaryParentYs[i];
+
+            if(grid[parent1y][parent1x].type == FlowerType.NONE)
+            {
+                continue;
+            }
+            
+        }
         throw new System.NotImplementedException();
 
     }
