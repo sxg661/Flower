@@ -9,7 +9,7 @@ public class TestRunner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TestAdjSquares();
+        TestParentPairsLiklihoodsEasy();
     }
 
 
@@ -92,6 +92,50 @@ public class TestRunner : MonoBehaviour
         Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
         Flower childFlower = flower1.GetOffspringWithColour(flower2, FlowerColour.GREEN);
         Debug.Log(childFlower);
+    }
+
+    void TestParentPairs()
+    {
+        Flower flower1 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower3 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.PURPLE);
+        Flower flower4 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.YELLOW);
+        Flower flower5 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.HYACINTH, FlowerColour.BLUE);
+
+        FlowerGrid.flowerGrid.AddFlower(flower1, 4, 4);
+        FlowerGrid.flowerGrid.AddFlower(flower2, 3, 4);
+        FlowerGrid.flowerGrid.AddFlower(flower3, 4, 3);
+        FlowerGrid.flowerGrid.AddFlower(flower4, 4, 6);
+        FlowerGrid.flowerGrid.AddFlower(flower5, 3, 5);
+
+        Dictionary<(int, int, int, int), int> gridSqs = FlowerGrid.flowerGrid.GetPossibleParents(FlowerType.MUM, 4, 5);
+        foreach((int,int,int,int) gridSq in gridSqs.Keys)
+        {
+            Debug.Log(gridSq);
+            Debug.Log(gridSqs[gridSq]);
+        }
+    }
+
+    void TestParentPairsLiklihoodsEasy()
+    {
+        Flower flower1 = new Flower(new String[] { "221" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower3 = new Flower(new String[] { "210" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.PURPLE);
+        Flower flower2 = new Flower(new String[] { "221" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower4 = new Flower(new String[] { "220", "221" }, new Fraction[] { new Fraction(1, 2), new Fraction(1, 2) }, FlowerType.MUM, FlowerColour.GREEN);
+
+        FlowerGrid.flowerGrid.AddFlower(flower1, 1, 1);
+        FlowerGrid.flowerGrid.AddFlower(flower2, 1, 0);
+        FlowerGrid.flowerGrid.AddFlower(flower3, 2, 2);
+        FlowerGrid.flowerGrid.AddFlower(flower4, 0, 3);
+
+
+        Dictionary<(int, int, int, int), int> gridSqs = FlowerGrid.flowerGrid.GetPossibleParents(FlowerType.MUM, 1, 2);
+        Dictionary<(int, int, int, int), Fraction> gridSqsLikli = FlowerGrid.flowerGrid.GetLiklihoodsOfParents(gridSqs, FlowerColour.GREEN);
+        foreach ((int, int, int, int) gridSq in gridSqsLikli.Keys)
+        {
+            Debug.Log(gridSq);
+            Debug.Log(gridSqsLikli[gridSq]);
+        }
     }
 
     // Update is called once per frame

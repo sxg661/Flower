@@ -4,8 +4,8 @@ using System.Collections;
 public struct Fraction
 {
 
-    int numerator;
-    int denominator;
+    public int numerator;
+    public int denominator;
     
     public Fraction(int numer, int denom)
     {
@@ -36,7 +36,7 @@ public struct Fraction
         return new Fraction(f.numerator / hcf, f.denominator / hcf);
     }
 
-    public static Fraction Recipocal(Fraction f)
+    public static Fraction Reciprocal(Fraction f)
     {
         return new Fraction(f.denominator, f.numerator);
     }
@@ -79,7 +79,7 @@ public struct Fraction
         Fraction[] newArr = new Fraction[arr.Length];
         for(int i = 0; i < arr.Length; i++)
         {
-            newArr[i] = Simplify(arr[i] * Recipocal(sum));
+            newArr[i] = Simplify(arr[i] * Reciprocal(sum));
         }
         return newArr;
     }
