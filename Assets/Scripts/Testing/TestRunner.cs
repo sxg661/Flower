@@ -131,11 +131,23 @@ public class TestRunner : MonoBehaviour
 
         Dictionary<(int, int, int, int), int> gridSqs = FlowerGrid.flowerGrid.GetPossibleParents(FlowerType.MUM, 1, 2);
         Dictionary<(int, int, int, int), Fraction> gridSqsLikli = FlowerGrid.flowerGrid.GetLiklihoodsOfParents(gridSqs, FlowerColour.GREEN);
-        foreach ((int, int, int, int) gridSq in gridSqsLikli.Keys)
+        foreach((int, int, int, int) gridSq in gridSqsLikli.Keys)
         {
             Debug.Log(gridSq);
             Debug.Log(gridSqsLikli[gridSq]);
         }
+
+        Dictionary<(int,int),List<(int,int,Fraction)>> flowerCombos = FlowerGrid.flowerGrid.GetCombosForEachFlower(gridSqsLikli);
+        foreach((int x, int y) in flowerCombos.Keys)
+        {
+            Debug.Log(String.Format("FLOWER AT {0},{1}", x, y));
+            foreach((int x2, int y2, Fraction liklihood) in flowerCombos[(x, y)])
+            {
+                Debug.Log(String.Format("{0}, {1}, liklihood {2}", x2, y2, liklihood));
+            }
+        }
+
+
     }
 
     // Update is called once per frame

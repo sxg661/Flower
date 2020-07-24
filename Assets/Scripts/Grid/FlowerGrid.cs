@@ -207,7 +207,7 @@ public class FlowerGrid : MonoBehaviour
     }
         
     /// <summary>
-    /// 
+    /// Gets a unique hash value of an index in the grid.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -219,7 +219,7 @@ public class FlowerGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Gets the liklihood that each pair of possible parents in the pair that created the offpsring of a certain colour.
     /// </summary>
     /// <param name="parentPairs"></param>
     /// <param name="offspringColour"></param>
@@ -241,8 +241,8 @@ public class FlowerGrid : MonoBehaviour
             Flower parent2 = GetFlower(x2, y2);
 
             //if it is the same flower with itself it is cloning, so just use the parent flower itself as the offspring
-            // (cloning does not work just breeding as far as I know, as the flower just copies itself rather than breeding
-            // with itself.
+            // (cloning does not work like breeding as far as I know, as the flower just copies itself rather than breeding
+            // with itself)
             var offspring = parent1;
             if (x1 != x2 || y1 != y2)
             {
@@ -250,8 +250,7 @@ public class FlowerGrid : MonoBehaviour
             }
 
             //look at the potential offspring of these parents and see which match the colour we are looking for
-            // if so, add the probablitiy of the offspring to the overall probablitility of the offpsring of this colour occuring
-            // given this pare
+            // from this get a probabity of these parents producing the offspring i.e. p(offspring | parents)
             Fraction probOfColourGivenParents = new Fraction(0, 0);
             for(int j = 0; j < offspring.genesPoss.Length; j++)
             {
@@ -262,15 +261,18 @@ public class FlowerGrid : MonoBehaviour
                     probOfColourGivenParents += offspring.genesProbs[j];
                 }
             }
-
             offspringProbsGivenParents[i] = probOfColourGivenParents;
+
+            //now get the probablity of these parents the parents given any offspring, i.e. p(parents)
             parentProbs[i] = new Fraction(parentPairsOccurances[(x1, y1, x2, y2)], numCombos);
         }
 
-        //now calculate the liklihood of the parents given the offspring usig bayes
-        var liklihoodParentsGivenOffspring = new Dictionary<(int, int, int, int), Fraction>();
+        //get the p(offpsring), which is the sum of p(parents) * p(offpsring | parents)
         Fraction[] probsbOffpring = Fraction.Normalise(offspringProbsGivenParents.Zip(parentProbs, (prob1, prob2) => prob1 * prob2).ToArray());
 
+        //now calculate the liklihood of the parents given the offspring i.e. p(parents | offspring)
+        // does this using bayes: p(a | b) = ( p(b | a) * p(a) )/ p(b)
+        var liklihoodParentsGivenOffspring = new Dictionary<(int, int, int, int), Fraction>();
         for (int i = 0; i < parentPairs.Length; i++)
         {
             (int x1, int y1, int x2, int y2) = parentPairs[i];
@@ -282,6 +284,45 @@ public class FlowerGrid : MonoBehaviour
 
         return liklihoodParentsGivenOffspring;
     }
+
+    /// <summary>
+    /// Reorganise a dictionary of (combinations, liklihood) to a dictionary of (flower, possible mates and liklihood of combo)
+    /// This will allow the prior beliefs of each flower to be easily updated down the line.
+    /// </summary>
+    /// <param name="comboLiklis"></param>
+    /// <returns>Dictionary : (x1, y1) of flower -> List: (x2,y2) of mate, liklihood of parent pair</returns>
+    public Dictionary<(int, int), List<(int, int, Fraction)>> GetCombosForEachFlower(Dictionary<(int,int,int,int), Fraction> comboLiklihoods)
+    {
+        var combosForFlowers = new Dictionary<(int, int), List<(int, int, Fraction)>>();
+
+        foreach((int x1, int y1, int x2, int y2) in comboLiklihoods.Keys)
+        {
+
+            Fraction liklihood = comboLiklihoods[(x1,y1,x2,y2)];
+
+            if (!combosForFlowers.ContainsKey((x1, y1)))
+            {
+                combosForFlowers[(x1, y1)] = new List<(int, int, Fraction)>();
+            }
+            combosForFlowers[(x1, y1)].Add((x2, y2, liklihood));
+
+            //if this is a cloning flower we are done now, so move on to the 
+            if(x1 == x2  && y1 == y2)
+            {
+                continue;
+            }
+
+            if (!combosForFlowers.ContainsKey((x2, y2)))
+            {
+                combosForFlowers[(x2, y2)] = new List<(int, int, Fraction)>();
+            }
+            combosForFlowers[(x2, y2)].Add((x1, y1, liklihood));
+
+        }
+
+        return combosForFlowers;
+    } 
+
 
 
 
