@@ -9,7 +9,12 @@ public class TestRunner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TestParentPairsLiklihoodsEasy();
+        TestCaseEasy();
+
+        Debug.Log("--------------------------------");
+
+        TestCaseEasyShowParentGenes();
+
     }
 
 
@@ -62,6 +67,21 @@ public class TestRunner : MonoBehaviour
         Debug.Log(childFlower);
     }
 
+    void TestCaseEasyShowParentGenes()
+    {
+        Flower flower1 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
+
+        Debug.Log("PARENT 1: " + flower1);
+        Debug.Log("PARENT 2: " + flower2);
+
+        var childFlower = flower1.BreedAndShowParentGenes(flower2);
+        foreach((Gene[] g1, Gene[] g2, Flower f) in childFlower)
+        {
+            Debug.Log(String.Format("PARENT 1: {0}, PARENT 2: {1}, CHILD: {2}", Gene.getString(g1), Gene.getString(g2), f));
+        }
+    }
+
     void TestCaseHard()
     {
         Gene[] genes2210 = new Gene[] { new Gene('2'), new Gene('2'), new Gene('1'),new Gene('0') };
@@ -86,13 +106,6 @@ public class TestRunner : MonoBehaviour
         Debug.Log(Fraction.Sum(childFlower2.genesProbs));
     }
 
-    void TestCaseColour()
-    {
-        Flower flower1 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
-        Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.GREEN);
-        Flower childFlower = flower1.GetOffspringWithColour(flower2, FlowerColour.GREEN);
-        Debug.Log(childFlower);
-    }
 
     void TestParentPairs()
     {

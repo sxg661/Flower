@@ -40,39 +40,33 @@ public class Flower
         return str;
     }
 
-    /// <summary>
-    /// Gets the possible offspring of two parents if the colour is already determined.
+    /// <summary>d.
+    /// List all the genes the parents would have to have to create a possible offspring.
     /// </summary>
     /// <param name="other"></param>
     /// <param name="colour"></param>
-    /// <returns></returns>
-    public Flower GetOffspringWithColour(Flower other, FlowerColour colour)
+    /// <returns>Parent Genes 1, Parent Genes 2, Offpsring Flower</returns>
+    public List<(Gene[], Gene[], Flower)> BreedAndShowParentGenes(Flower other)
     {
         if (type != other.type)
         {
-            return PredefinedFlowers.noFlower;
+            return new List<(Gene[], Gene[], Flower)>();
         }
 
-        Flower possibleChildren = BreedWith(other);
-
-        List<Gene[]> childrenColGenes = new List<Gene[]>();
-        List<Fraction> childrenColProb = new List<Fraction>();
-
-        for (int i = 0; i < possibleChildren.genesPoss.Length; i++)
+        var offpsring = new List<(Gene[], Gene[], Flower)>();
+        for(int i = 0; i < genesPoss.Count(); i++)
         {
-
-            Gene[] genes = possibleChildren.genesPoss[i];
-            FlowerColour geneColour = FlowerColourLookup.lookup.colourLookup[type][Gene.getString(genes)];
-
-            if (geneColour == colour)
+            for (int j = i; j < other.genesPoss.Count(); j++)
             {
-                childrenColGenes.Add(genes);
-                childrenColProb.Add(possibleChildren.genesProbs[i]);
+
+                (Gene[][] genes, Fraction[] liklihoods) = BreedGeneLists(genesPoss[i], other.genesPoss[j]);
+                Flower child = new Flower(genes, liklihoods, type, FlowerColour.NONE);
+                offpsring.Add((genesPoss[i], other.genesPoss[j], child));
+
             }
-                
         }
 
-        return new Flower(childrenColGenes.ToArray(), Fraction.Normalise(childrenColProb.ToArray()), type, colour);
+        return offpsring;
     }
 
 
@@ -83,45 +77,45 @@ public class Flower
         /// <param name="other">The flower to breed with</param>
         /// <returns></returns>
         public Flower BreedWith(Flower other)
-    {
-        if (type != other.type)
         {
-            return PredefinedFlowers.noFlower;
-        }
-
-        Dictionary<string, (Gene[], Fraction)> allPoss = new Dictionary<string, (Gene[], Fraction)>();
-
-        for (int i = 0; i < genesPoss.Length; i++)
-        {
-            Gene[] genelist1 = genesPoss[i];
-            Fraction prob1 = genesProbs[i];
-
-            for (int j = 0; j < other.genesPoss.Length; j++)
+            if (type != other.type)
             {
-                Gene[] genelist2 = other.genesPoss[j];
-                Fraction prob2 = other.genesProbs[j];
-
-                (Gene[][] possChildren, Fraction[] probsChildren) = BreedGeneLists(genelist1, genelist2);
-
-                for(int k = 0; k < possChildren.Length; k++)
-                {
-                    string key = Gene.getString(possChildren[k]);
-                    if (!allPoss.ContainsKey(key))
-                    {
-                        allPoss[key] = (possChildren[k], new Fraction(0,0));
-                    }
-                    allPoss[key] = (allPoss[key].Item1, allPoss[key].Item2 + (probsChildren[k] * prob1 * prob2));
-                }
+                return PredefinedFlowers.noFlower;
             }
 
+            Dictionary<string, (Gene[], Fraction)> allPoss = new Dictionary<string, (Gene[], Fraction)>();
+
+            for (int i = 0; i < genesPoss.Length; i++)
+            {
+                Gene[] genelist1 = genesPoss[i];
+                Fraction prob1 = genesProbs[i];
+
+                for (int j = 0; j < other.genesPoss.Length; j++)
+                {
+                    Gene[] genelist2 = other.genesPoss[j];
+                    Fraction prob2 = other.genesProbs[j];
+
+                    (Gene[][] possChildren, Fraction[] probsChildren) = BreedGeneLists(genelist1, genelist2);
+
+                    for(int k = 0; k < possChildren.Length; k++)
+                    {
+                        string key = Gene.getString(possChildren[k]);
+                        if (!allPoss.ContainsKey(key))
+                        {
+                            allPoss[key] = (possChildren[k], new Fraction(0,0));
+                        }
+                        allPoss[key] = (allPoss[key].Item1, allPoss[key].Item2 + (probsChildren[k] * prob1 * prob2));
+                    }
+                }
+
+            }
+
+            Gene[][] flowerGenePoss = allPoss.Values.Select(i => i.Item1).ToArray();
+            Fraction[] probs = allPoss.Values.Select(i => i.Item2).ToArray();
+
+            return new Flower(flowerGenePoss, probs, type, FlowerColour.NONE);
+
         }
-
-        Gene[][] flowerGenePoss = allPoss.Values.Select(i => i.Item1).ToArray();
-        Fraction[] probs = allPoss.Values.Select(i => i.Item2).ToArray();
-
-        return new Flower(flowerGenePoss, probs, type, FlowerColour.NONE);
-
-    }
 
     /// <summary>
     /// Breed two lists of genes together to get all the possible gene lists of their offspring.
