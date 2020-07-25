@@ -122,9 +122,53 @@ public class FlowerGrid : MonoBehaviour
 
 
 
-    public bool AddOffpSpirng(FlowerType type, FlowerColour colour, int x, int y)
+    public bool AddOffspring(FlowerType type, FlowerColour colour, int x, int y)
     {
-        throw new System.NotImplementedException();
+        if(GetFlower(x,y).type != FlowerType.NONE)
+        {
+            return false;
+        }
+
+        Dictionary<(int, int, int, int), int> possibleParents = GetPossibleParents(type, x, y);
+        if(possibleParents.Count == 0)
+        {
+            return false;
+        }
+
+        Dictionary<(int, int, int, int), Fraction> parentLiklihoods = GetLiklihoodsOfParents(possibleParents, colour);
+        Dictionary<(int, int), List<(int, int, Fraction)>> combosPerFlower = GetCombosForEachFlower(parentLiklihoods);
+
+        // get the possible genes of this offspring and add it to the grid
+        var genesOffspring = new Dictionary<String, Fraction>();
+        foreach((int x1, int y1, int x2, int y2) in parentLiklihoods.Keys)
+        {
+            Flower offspring = GetFlower(x1, y1);
+            if(x1 != x2 || y1 != y2)
+            {
+                offspring = GetFlower(x1, y1).BreedWith(GetFlower(x2, y2));
+            }
+
+            for(int i = 0; i < offspring.genesPoss.Count(); i++)
+            {
+                string offspringGeneCode = Gene.getString(offspring.genesPoss[i]);
+                if(FlowerColourLookup.lookup.colourLookup[type][offspringGeneCode] == colour)
+                {
+                    if (!genesOffspring.ContainsKey(offspringGeneCode))
+                    {
+                        genesOffspring[offspringGeneCode] = new Fraction(0, 0);
+                    }
+                    genesOffspring[offspringGeneCode] += offspring.genesProbs[i] * parentLiklihoods[(x1,y1,x2,y2)];
+                }
+                
+            }
+        }
+        AddFlower(new Flower(genesOffspring.Keys.ToArray(), Fraction.Normalise(genesOffspring.Values.ToArray()), type, colour), x, y);
+
+        //todo UPDATE PRIOR BELIEFS
+
+
+        return true;
+
     }
 
 
