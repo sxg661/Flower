@@ -164,12 +164,79 @@ public class FlowerGrid : MonoBehaviour
         }
         AddFlower(new Flower(genesOffspring.Keys.ToArray(), Fraction.Normalise(genesOffspring.Values.ToArray()), type, colour), x, y);
 
-        //todo UPDATE PRIOR BELIEFS
+        UpdatePriorBeliefs(combosPerFlower, colour);
 
 
         return true;
 
     }
+
+
+    public void UpdatePriorBeliefs(Dictionary<(int, int), List<(int, int, Fraction)>> combosPerFlower, FlowerColour offpsringColour)
+    {
+
+        //iterate through the flowers
+        foreach((int x, int y) in combosPerFlower.Keys)
+        {
+            Flower flower = GetFlower(x, y);
+
+            if(flower.genesPoss.Length == 1)
+            {
+                continue;
+            }
+
+            Fraction liklihoodParent = new Fraction(0, 0);
+            Fraction[] geneLiklils = new Fraction[flower.genesPoss.Length];
+
+            //iterate through each potential mate for this flower
+            foreach ((int xOther, int yOther, Fraction liklihood) in combosPerFlower[(x, y)])
+            {
+                liklihoodParent += liklihood;
+
+                Fraction[] geneLiklilsGivenPair = new Fraction[flower.genesPoss.Length];
+                String[] geneIDs = flower.genesPoss.Select(g => Gene.getString(g)).ToArray();
+
+                Flower flowerOther = GetFlower(xOther, yOther);
+
+
+                //based on this pair, work out the liklihoods of genes for this flower given the offpsring
+
+                //first work out the probablity of the offspring given the genes
+                Fraction[] offspringProbsGivenGenes = new Fraction[geneLiklils.Length];
+
+                var offpsringWithParentGenes = flower.BreedAndShowParentGenes(flowerOther);
+                foreach ((Gene[] genes, Gene[] genesOther, Fraction probGenes, Flower offpsring) in offpsringWithParentGenes)
+                {
+
+                    string gID = Gene.getString(genes);
+                    int index = Array.IndexOf(geneIDs, gID);
+
+                    for(int i = 0; i < offpsring.genesPoss.Length; i++)
+                    {
+                        String offpsringGeneID = Gene.getString(offpsring.genesPoss[i]);
+                        if(FlowerColourLookup.lookup.colourLookup[flower.type][offpsringGeneID] == offpsringColour)
+                        {
+                            offspringProbsGivenGenes[index] += offpsring.genesProbs[i] * probGenes;
+                        }
+                    }
+                }
+
+                //now use Bayes to get the probability of the genes given the offspring and add it to our so far discovered gene liklihoods
+                Fraction[] geneProbsGivenOffspring = Fraction.Normalise(offspringProbsGivenGenes);
+                geneLiklils = geneLiklils.Zip(geneProbsGivenOffspring.Select(l => l * liklihood), (f1, f2) => f1 + f2).ToArray();
+            }
+
+            //if there is a chance that the flower is not the parent, we need to account for this too!
+            if(liklihoodParent.numerator != liklihoodParent.denominator)
+            {
+                Fraction likliNotParent =  new Fraction(1, 1) - liklihoodParent;
+                geneLiklils = geneLiklils.Zip(flower.genesProbs.Select(p => p * likliNotParent), (f1, f2) => f1 + f2).ToArray();
+            }
+
+            Flower newFlower = new Flower(flower.genesPoss, geneLiklils, flower.type, flower.colour);
+
+        }
+    } 
 
 
 
@@ -298,8 +365,8 @@ public class FlowerGrid : MonoBehaviour
             Fraction probOfColourGivenParents = new Fraction(0, 0);
             for(int j = 0; j < offspring.genesPoss.Length; j++)
             {
-                Gene[] genes = offspring.genesPoss[j];
-                FlowerColour colour = FlowerColourLookup.lookup.colourLookup[offspring.type][Gene.getString(genes)];
+                string geneID = Gene.getString(offspring.genesPoss[j]);
+                FlowerColour colour = FlowerColourLookup.lookup.colourLookup[offspring.type][geneID];
                 if(colour == offspringColour)
                 {
                     probOfColourGivenParents += offspring.genesProbs[j];
@@ -311,11 +378,11 @@ public class FlowerGrid : MonoBehaviour
             parentProbs[i] = new Fraction(parentPairsOccurances[(x1, y1, x2, y2)], numCombos);
         }
 
-        //get the p(offpsring), which is the sum of p(parents) * p(offpsring | parents)
-        Fraction[] probsbOffpring = Fraction.Normalise(offspringProbsGivenParents.Zip(parentProbs, (prob1, prob2) => prob1 * prob2).ToArray());
-
         //now calculate the liklihood of the parents given the offspring i.e. p(parents | offspring)
         // does this using bayes: p(a | b) = ( p(b | a) * p(a) )/ p(b)
+        //  (this is done in one line below by getting all the p(a | b) * p(a) values in a list and normalising it (making add up to 1)
+        //  the normalisation is essentially the the equivolent of doing p(b), as p(b) = sum( p(b | a) * p(a) ).
+        Fraction[] probsbOffpring = Fraction.Normalise(offspringProbsGivenParents.Zip(parentProbs, (prob1, prob2) => prob1 * prob2).ToArray());
         var liklihoodParentsGivenOffspring = new Dictionary<(int, int, int, int), Fraction>();
         for (int i = 0; i < parentPairs.Length; i++)
         {

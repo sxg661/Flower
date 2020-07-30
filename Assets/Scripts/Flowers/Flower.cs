@@ -30,6 +30,22 @@ public class Flower
         this.colour = colour;
     }
 
+
+    public void Validate()
+    {
+        if(genesPoss.Length != genesProbs.Length)
+        {
+            type = FlowerType.NONE;
+        }
+
+        var newGenesPoss = new List<Fraction>();
+        var newGenesProbs = new List<Fraction>();
+        for (int i = 0; i < genesPoss.Length; i++)
+        {
+            
+        }
+    }
+
     public override string ToString()
     {
         string str = String.Format("Type: {0},  Colour: {1}  ", type, colour);
@@ -45,23 +61,23 @@ public class Flower
     /// </summary>
     /// <param name="other"></param>
     /// <param name="colour"></param>
-    /// <returns>Parent Genes 1, Parent Genes 2, Offpsring Flower</returns>
-    public List<(Gene[], Gene[], Flower)> BreedAndShowParentGenes(Flower other)
+    /// <returns>Parent Genes 1, Parent Genes 2, Probablity of Combination, Offpsring Flower</returns>
+    public List<(Gene[], Gene[], Fraction, Flower)> BreedAndShowParentGenes(Flower other)
     {
         if (type != other.type)
         {
-            return new List<(Gene[], Gene[], Flower)>();
+            return new List<(Gene[], Gene[], Fraction, Flower)>();
         }
 
-        var offpsring = new List<(Gene[], Gene[], Flower)>();
+        var offpsring = new List<(Gene[], Gene[], Fraction, Flower)>();
         for(int i = 0; i < genesPoss.Count(); i++)
         {
-            for (int j = i; j < other.genesPoss.Count(); j++)
+            for (int j = 0; j < other.genesPoss.Count(); j++)
             {
 
                 (Gene[][] genes, Fraction[] liklihoods) = BreedGeneLists(genesPoss[i], other.genesPoss[j]);
                 Flower child = new Flower(genes, liklihoods, type, FlowerColour.NONE);
-                offpsring.Add((genesPoss[i], other.genesPoss[j], child));
+                offpsring.Add((genesPoss[i], other.genesPoss[j], genesProbs[i] * other.genesProbs[j], child));
 
             }
         }

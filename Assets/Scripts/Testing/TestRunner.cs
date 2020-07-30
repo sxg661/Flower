@@ -9,7 +9,7 @@ public class TestRunner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(new Fraction(1, 15 ) + new Fraction(8, 39));
+        TestAddOffpsringAndUpdatePriorsOfParents();
 
     }
 
@@ -72,9 +72,9 @@ public class TestRunner : MonoBehaviour
         Debug.Log("PARENT 2: " + flower2);
 
         var childFlower = flower1.BreedAndShowParentGenes(flower2);
-        foreach((Gene[] g1, Gene[] g2, Flower f) in childFlower)
+        foreach((Gene[] g1, Gene[] g2, Fraction prob, Flower f) in childFlower)
         {
-            Debug.Log(String.Format("PARENT 1: {0}, PARENT 2: {1}, CHILD: {2}", Gene.getString(g1), Gene.getString(g2), f));
+            Debug.Log(String.Format("PARENT 1: {0}, PARENT 2: {1}, PROB: {2}, CHILD: {3}", Gene.getString(g1), prob, Gene.getString(g2), f));
         }
     }
 
@@ -157,6 +157,7 @@ public class TestRunner : MonoBehaviour
         }
     }
 
+
     void TestAddOffspring()
     {
         Flower flower1 = new Flower(new String[] { "221" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.GREEN);
@@ -174,6 +175,21 @@ public class TestRunner : MonoBehaviour
 
         Debug.Log(FlowerGrid.flowerGrid.GetFlower(1,2));
 
+    }
+
+    void TestAddOffpsringAndUpdatePriorsOfParents()
+    {
+        Flower flower1 = new Flower(new String[] { "221", "220"}, new Fraction[] { new Fraction(1, 3), new Fraction(2,3) }, FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower2 = new Flower(new String[] { "220" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.GREEN);
+        Flower flower3 = new Flower(new String[] { "210" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.PURPLE);
+        Flower flower4 = new Flower(new String[] { "210", "211" }, new Fraction[] { new Fraction(1, 2), new Fraction(1, 2) }, FlowerType.MUM, FlowerColour.PURPLE);
+
+        FlowerGrid.flowerGrid.AddFlower(flower1, 1, 1);
+        FlowerGrid.flowerGrid.AddFlower(flower2, 2, 2);
+        FlowerGrid.flowerGrid.AddFlower(flower3, 1, 0);
+        FlowerGrid.flowerGrid.AddFlower(flower4, 0, 3);
+
+        FlowerGrid.flowerGrid.AddOffspring(FlowerType.MUM, FlowerColour.GREEN, 1, 2);
 
     }
 
