@@ -171,7 +171,11 @@ public class FlowerGrid : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Update the beliefs for any parents that could be the parent of a certain flower.
+    /// </summary>
+    /// <param name="combosPerFlower">For each flower, its possible mates and the likelyhood of the parent combination</param>
+    /// <param name="offpsringColour">The colour of the offpsring produced</param>
     public void UpdatePriorBeliefs(Dictionary<(int, int), List<(int, int, Fraction)>> combosPerFlower, FlowerColour offpsringColour)
     {
 

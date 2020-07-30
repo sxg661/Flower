@@ -18,6 +18,8 @@ public class Flower
         this.genesProbs = genesProbs;
         this.type = type;
         this.colour = colour;
+
+        Validate();
     }
 
     public Flower(string[] geneCodes, Fraction[] genesProbs, FlowerType type, FlowerColour colour)
@@ -28,9 +30,13 @@ public class Flower
         this.genesProbs = genesProbs;
         this.type = type;
         this.colour = colour;
+
+        Validate();
     }
 
-
+    /// <summary>
+    /// Validate the value inside this class to check they are valid!
+    /// </summary>
     public void Validate()
     {
         if(genesPoss.Length != genesProbs.Length)
@@ -38,11 +44,15 @@ public class Flower
             type = FlowerType.NONE;
         }
 
-        var newGenesPoss = new List<Fraction>();
+        var newGenesPoss = new List<Gene[]>();
         var newGenesProbs = new List<Fraction>();
         for (int i = 0; i < genesPoss.Length; i++)
         {
-            
+            if(genesProbs[i].numerator != 0)
+            {
+                newGenesPoss.Add(genesPoss[i]);
+                newGenesProbs.Add(genesProbs[i]);
+            }
         }
     }
 
@@ -81,7 +91,6 @@ public class Flower
 
             }
         }
-
         return offpsring;
     }
 
