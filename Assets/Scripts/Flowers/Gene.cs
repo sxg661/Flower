@@ -75,6 +75,11 @@ public struct Gene
         return otherGene.allele1 == allele1 && otherGene.allele2 == allele2;
     }
 
+    public override int GetHashCode()
+    {
+        return ToString().GetHashCode();
+    }
+
     public override string ToString()
     {
         return (Convert.ToInt32(allele1) + Convert.ToInt32(allele2)).ToString();
