@@ -30,11 +30,11 @@ public class TestRunner : MonoBehaviour
         (List<int> adjx, List<int> adjy) = FlowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x,y) = (FlowerGrid.GRIDWIDTH - 1, 7);
+        (x,y) = (FlowerGrid.flowerGrid.gridWidth - 1, 7);
         (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x, y) = (4, FlowerGrid.GRIDHEIGHT - 1);
+        (x, y) = (4, FlowerGrid.flowerGrid.gridHeight - 1);
         (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
@@ -46,11 +46,11 @@ public class TestRunner : MonoBehaviour
         (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x, y) = (0, FlowerGrid.GRIDHEIGHT - 1);
+        (x, y) = (0, FlowerGrid.flowerGrid.gridHeight - 1);
         (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x, y) = (FlowerGrid.GRIDWIDTH - 1, FlowerGrid.GRIDHEIGHT - 1);
+        (x, y) = (FlowerGrid.flowerGrid.gridWidth- 1, FlowerGrid.flowerGrid.gridHeight - 1);
         (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
     }

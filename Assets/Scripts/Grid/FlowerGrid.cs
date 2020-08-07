@@ -6,16 +6,17 @@ using System;
 
 public class FlowerGrid : MonoBehaviour
 {
-    public static readonly int GRIDWIDTH = 20;
-    public static readonly int GRIDHEIGHT = 20;
 
     public static FlowerGrid flowerGrid;
+
+    public int gridWidth = 20;
+    public int gridHeight = 20;
 
     Flower[][] grid;
 
     public static bool InGrid(int x, int y)
     {
-        return x >= 0 && x < GRIDWIDTH && y >= 0 && y < GRIDHEIGHT;
+        return x >= 0 && x < flowerGrid.gridWidth && y >= 0 && y < flowerGrid.gridHeight;
     }
 
 
@@ -54,6 +55,7 @@ public class FlowerGrid : MonoBehaviour
     {
         flowerGrid = this;
         InitialiseGrid();
+
     }
 
     /// <summary>
@@ -61,10 +63,10 @@ public class FlowerGrid : MonoBehaviour
     /// </summary>
     public void InitialiseGrid()
     {
-        grid = new Flower[GRIDHEIGHT][];
+        grid = new Flower[gridHeight][];
 
         //fill the grid with empty flowers
-        grid = grid.Select(row => (new Grid[GRIDWIDTH].Select(col => PredefinedFlowers.noFlower)).ToArray()).ToArray();
+        grid = grid.Select(row => (new Grid[gridWidth].Select(col => PredefinedFlowers.noFlower)).ToArray()).ToArray();
     }
 
     public Flower GetFlower(int x, int y)
@@ -121,7 +123,15 @@ public class FlowerGrid : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Add flower to grid as offpsring, implying that the surrouding flowers are parents.
+    /// Will work out the possible genes of the offpsring and update possible genes of possible parent flowers.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="colour"></param>
+    /// <param name="x">x position in grid</param>
+    /// <param name="y">y position in grid</param>
+    /// <returns>true if parents found, false if not valid parents found</returns>
     public bool AddOffspring(FlowerType type, FlowerColour colour, int x, int y)
     {
         if(GetFlower(x,y).type != FlowerType.NONE)
@@ -136,6 +146,11 @@ public class FlowerGrid : MonoBehaviour
         }
 
         Dictionary<(int, int, int, int), Fraction> parentLiklihoods = GetLiklihoodsOfParents(possibleParents, colour);
+        if(parentLiklihoods.Count == 0)
+        {
+            return false;
+        }
+
         Dictionary<(int, int), List<(int, int, Fraction)>> combosPerFlower = GetCombosForEachFlower(parentLiklihoods);
 
         // get the possible genes of this offspring and add it to the grid
@@ -178,7 +193,6 @@ public class FlowerGrid : MonoBehaviour
     /// <param name="offpsringColour">The colour of the offpsring produced</param>
     public void UpdatePriorBeliefs(Dictionary<(int, int), List<(int, int, Fraction)>> combosPerFlower, FlowerColour offpsringColour)
     {
-
         //iterate through the flowers
         foreach((int x, int y) in combosPerFlower.Keys)
         {
@@ -230,6 +244,11 @@ public class FlowerGrid : MonoBehaviour
                 geneLiklils = geneLiklils.Zip(geneProbsGivenOffspring.Select(l => l * liklihood), (f1, f2) => f1 + f2).ToArray();
             }
 
+            if (liklihoodParent.numerator == 0)
+            {
+                continue;
+            }
+
             //if there is a chance that the flower is not the parent, we need to account for this too!
             if(liklihoodParent.numerator != liklihoodParent.denominator)
             {
@@ -238,6 +257,8 @@ public class FlowerGrid : MonoBehaviour
             }
 
             Flower newFlower = new Flower(flower.genesPoss, geneLiklils, flower.type, flower.colour);
+
+            
 
         }
     } 
