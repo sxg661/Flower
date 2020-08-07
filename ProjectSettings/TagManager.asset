@@ -41,9 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Grid
+    uniqueID: 3717433575
+    locked: 0
   - name: Flower
     uniqueID: 1654554081
-    locked: 0
-  - name: New Layer
-    uniqueID: 3717433575
     locked: 0

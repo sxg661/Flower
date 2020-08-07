@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PanScript : MonoBehaviour
 {
-    float DRAGSPEED = 0.05f;
+    float DRAGSPEED = 0.02f;
     float ARROWSPEED = 0.6f;
 
     Vector3 lastMousePos;

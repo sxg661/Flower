@@ -10,12 +10,14 @@ public class ZoomingScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         thisCam = GetComponent<Camera>();
-	}
+        float newSize = thisCam.orthographicSize - 2;
+        thisCam.orthographicSize = Mathf.Clamp(newSize, 2.5f, 10);
+    }
 	
 	// Update is called once per frame
 	void Update () {
         float zoom = -UnityEngine.Input.GetAxis("Mouse ScrollWheel") * SPEED;
         float newSize = thisCam.orthographicSize + zoom;
-        thisCam.orthographicSize = Mathf.Clamp(newSize,2.5f, 10);
+        thisCam.orthographicSize = Mathf.Clamp(newSize,2.5f, 5);
     }
 }

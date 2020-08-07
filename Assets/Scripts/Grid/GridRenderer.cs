@@ -22,7 +22,7 @@ public class GridRenderer : MonoBehaviour
     GameObject ghostTilePrefab;
 
 
-    //I am not going to show ghosts for now, but functionality is there for the future
+    //not ghosts for now, might have them in the future though!
     bool showGhosts = false;
 
     private Pointer<bool> rowClick = new Pointer<bool>(false);

@@ -9,8 +9,11 @@ public class FlowerGrid : MonoBehaviour
 
     public static FlowerGrid flowerGrid;
 
-    public int gridWidth = 20;
-    public int gridHeight = 20;
+    [SerializeField]
+    public int gridWidth = 10;
+
+    [SerializeField]
+    public int gridHeight = 10;
 
     Flower[][] grid;
 

@@ -7,6 +7,12 @@ public class FlowerController : MonoBehaviour
 
     SpriteRenderer renderer;
 
+    [SerializeField]
+    int x;
+
+    [SerializeField]
+    int y;
+
     public void Awake()
     {
     }
@@ -19,12 +25,14 @@ public class FlowerController : MonoBehaviour
         string imageName = string.Format("{0}/{1}", flower.type, flower.colour);
         Sprite flowerSprite = Resources.Load<Sprite>(imageName);
 
-        if(flowerSprite == null)
+        if (flowerSprite == null)
         {
             flowerSprite = Resources.Load<Sprite>("OOPS");
         }
 
         renderer.sprite = flowerSprite;
+
+        transform.position = GridRenderer.GetWorldPos(x, y, 1, 1);
     }
 
 
