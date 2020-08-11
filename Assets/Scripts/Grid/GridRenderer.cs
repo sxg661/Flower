@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is a grid rendering script, which renders the information contained in FlowerGrid.
+/// </summary>
 public class GridRenderer : MonoBehaviour
 {
+
+    [SerializeField]
+    GameObject flowerPrefab;
 
     public static Vector3 GetWorldPos(int x, int y, float width, float height)
     {
@@ -22,7 +28,7 @@ public class GridRenderer : MonoBehaviour
     GameObject ghostTilePrefab;
 
 
-    //not ghosts for now, might have them in the future though!
+    //no ghosts for now, might have them in the future though!
     bool showGhosts = false;
 
     private Pointer<bool> rowClick = new Pointer<bool>(false);
@@ -47,6 +53,13 @@ public class GridRenderer : MonoBehaviour
         {
             AddGhosts();
         }
+
+        //Add a flower to grid for test
+        Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.COSMOS, FlowerColour.PINK);
+        GameObject flowerObj = Instantiate(flowerPrefab);
+        flowerObj.GetComponent<FlowerController>().GiveDetails(flower, 3, 3);
+        
+
         
 
     }

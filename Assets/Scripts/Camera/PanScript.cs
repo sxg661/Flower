@@ -29,11 +29,14 @@ public class PanScript : MonoBehaviour
 
         Vector3 movement = new Vector3(UnityEngine.Input.GetAxis("Horizontal"), UnityEngine.Input.GetAxis("Vertical"), 0) * ARROWSPEED;
 
-        if (UnityEngine.Input.GetMouseButtonDown(0))
+        if (UnityEngine.Input.GetMouseButtonDown(0) && !ClickDetector.clickDetector.overGUI)
         {
-            mouseDown = true;
-            lastMousePos = UnityEngine.Input.mousePosition;
+             mouseDown = true;
+             lastMousePos = UnityEngine.Input.mousePosition;
+
         }
+
+
         if (mouseDown)
         {
             Vector3 thisMousePos = UnityEngine.Input.mousePosition;
@@ -42,6 +45,11 @@ public class PanScript : MonoBehaviour
             movement += new Vector3(-horizont, -vert, movement.z) * DRAGSPEED;
 
             lastMousePos = thisMousePos;
+
+            if(SimulationController.singleton.SelectedFlower != null && SimulationController.singleton.SelectedFlower.beingDragged)
+            {
+                mouseDown = false;
+            }
 
             if (UnityEngine.Input.GetMouseButtonUp(0))
             {

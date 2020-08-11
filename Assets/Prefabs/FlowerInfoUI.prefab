@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 8558092944598101486}
   - component: {fileID: 8558092944598101484}
   - component: {fileID: 8558092944598101487}
+  - component: {fileID: 3680767948687739013}
   m_Layer: 5
   m_Name: FlowerInfoUI
   m_TagString: Untagged
@@ -156,6 +157,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &3680767948687739013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8558092944598101481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b852cc31adaec2a4091d16d8c449f972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleText: {fileID: 8558092944024589828}
+  flowerImage: {fileID: 8558092944761434293}
 --- !u!1 &8558092944761434295
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +332,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScrollMenuVertical
       objectReference: {fileID: 0}
+    - target: {fileID: 3575709982197339272, guid: be2d968399cca014bb8905c50770c1b2,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575709982197339272, guid: be2d968399cca014bb8905c50770c1b2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3575709981976077449, guid: be2d968399cca014bb8905c50770c1b2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -422,30 +447,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3575709982197339272, guid: be2d968399cca014bb8905c50770c1b2,
+    - target: {fileID: 3575709982197339274, guid: be2d968399cca014bb8905c50770c1b2,
         type: 3}
-      propertyPath: m_SizeDelta.y
+      propertyPath: m_ChildAlignment
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575709982197339272, guid: be2d968399cca014bb8905c50770c1b2,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575709983393808774, guid: be2d968399cca014bb8905c50770c1b2,
-        type: 3}
-      propertyPath: m_Direction
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575709983393808774, guid: be2d968399cca014bb8905c50770c1b2,
-        type: 3}
-      propertyPath: m_Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3575709983393808774, guid: be2d968399cca014bb8905c50770c1b2,
-        type: 3}
-      propertyPath: m_Size
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3575709983393808777, guid: be2d968399cca014bb8905c50770c1b2,
         type: 3}
@@ -467,10 +472,20 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3575709982197339274, guid: be2d968399cca014bb8905c50770c1b2,
+    - target: {fileID: 3575709983393808774, guid: be2d968399cca014bb8905c50770c1b2,
         type: 3}
-      propertyPath: m_ChildAlignment
+      propertyPath: m_Direction
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575709983393808774, guid: be2d968399cca014bb8905c50770c1b2,
+        type: 3}
+      propertyPath: m_Value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575709983393808774, guid: be2d968399cca014bb8905c50770c1b2,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be2d968399cca014bb8905c50770c1b2, type: 3}

@@ -50,11 +50,8 @@ public class GhostTileController : MonoBehaviour, IInteractable
         hover.value = false;
     }
 
-
-    public void MouseClick()
+    public void MouseButtonDown()
     {
         click.value = true;
     }
-
-
 }

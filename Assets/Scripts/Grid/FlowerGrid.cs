@@ -21,6 +21,15 @@ public class FlowerGrid : MonoBehaviour
     {
         return x >= 0 && x < flowerGrid.gridWidth && y >= 0 && y < flowerGrid.gridHeight;
     }
+    public static bool IsValidTilePlacement(int x, int y)
+    {
+        if (!InGrid(x, y))
+        {
+            return false;
+        }
+
+        return (flowerGrid.GetFlower(x, y).type == FlowerType.NONE);
+    }
 
 
     /// <summary>
@@ -114,7 +123,7 @@ public class FlowerGrid : MonoBehaviour
     /// <param name="x">Horizontal coordinate</param>
     /// <param name="y">Vertical coordinate</param>
     /// <returns></returns>
-    public bool RemoveFlower(Flower flower, int x, int y)
+    public bool RemoveFlower(int x, int y)
     {
         if (!InGrid(x, y))
         {

@@ -6,5 +6,5 @@ public interface IInteractable
 {
     void MouseEnter();
     void MouseExit();
-    void MouseClick();
+    void MouseButtonDown();
 }

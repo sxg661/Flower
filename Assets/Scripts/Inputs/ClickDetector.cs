@@ -8,18 +8,26 @@ public class ClickDetector : MonoBehaviour
     [SerializeField]
     EventSystem system;
 
+    public static ClickDetector clickDetector;
+
     Camera cam;
     IInteractable currentInteractable;
     GameObject currentObject;
-    bool click;
+    public bool clickDown;
+    public bool overGUI;
+
+    private void Awake()
+    {
+        clickDetector = this;
+    }
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         cam = Camera.main;
         currentInteractable = null;
         currentObject = null;
-        click = false;
+        clickDown = false;
     }
 
 
@@ -28,8 +36,9 @@ public class ClickDetector : MonoBehaviour
     {
         if (UnityEngine.Input.GetMouseButtonDown(0))
         {
-            click = true;
+            clickDown = true;
         }
+        overGUI = system.IsPointerOverGameObject();
     }
 
     void FixedUpdate()
@@ -38,13 +47,22 @@ public class ClickDetector : MonoBehaviour
         RaycastHit2D hit;
 
         hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
-
+        if (hit)
+        {
+            Debug.Log(hit);
+            Debug.Log(overGUI);
+        }
 
 
 
         IInteractable interactable = null;
 
-        //TODO ADD CHECK TO SEE IF CURSOR IS OCCUPIED
+        if(overGUI)
+        {
+            clickDown = false;
+            return;
+        }
+            
 
 
         if (hit)
@@ -59,10 +77,10 @@ public class ClickDetector : MonoBehaviour
         }
         if(interactable != null)
         {
-            if (click)
+            if (clickDown)
             {
-                interactable.MouseClick();
-                click = false;
+                interactable.MouseButtonDown();
+                clickDown = false;
             }
 
             interactable.MouseEnter();
@@ -70,7 +88,14 @@ public class ClickDetector : MonoBehaviour
    
 
         currentInteractable = interactable;
-        click = false;
+
+        if (clickDown)
+        {
+            SimulationController.singleton.ClearSelection();
+        }
+
+        clickDown = false;
+
 
 
    
