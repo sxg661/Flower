@@ -112,6 +112,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!224 &346550210 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5141718210723999740, guid: bf01a1f5dbe198d48aa836aa54918463,
+    type: 3}
+  m_PrefabInstance: {fileID: 8558092945457179138}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &383453154
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +656,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5141718210723999740, guid: bf01a1f5dbe198d48aa836aa54918463,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5141718210723999740, guid: bf01a1f5dbe198d48aa836aa54918463,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8558092944598101486, guid: bf01a1f5dbe198d48aa836aa54918463,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -862,5 +878,20 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5141718210723999742, guid: bf01a1f5dbe198d48aa836aa54918463,
+        type: 3}
+      propertyPath: m_ChildAlignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5141718209936498674, guid: bf01a1f5dbe198d48aa836aa54918463,
+        type: 3}
+      propertyPath: m_MovementType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680767948687739013, guid: bf01a1f5dbe198d48aa836aa54918463,
+        type: 3}
+      propertyPath: scrollMenuContents
+      value: 
+      objectReference: {fileID: 346550210}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf01a1f5dbe198d48aa836aa54918463, type: 3}
