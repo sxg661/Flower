@@ -12,8 +12,22 @@ public class FlowerInfoController : MonoBehaviour
     [SerializeField]
     Image flowerImage;
 
+    [SerializeField]
+    Transform scrollMenuContents;
+
+    [SerializeField]
+    GameObject genePanelPrefab;
+
     FlowerController currentController;
-    
+
+    List<GameObject> genePanels;
+
+
+    private void Awake()
+    {
+        genePanels = new List<GameObject>();
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +52,8 @@ public class FlowerInfoController : MonoBehaviour
             return;
         }
 
+        ClearGenesList();
+
         if (controller == null)
         {
             titleText.text = "No Flower Selected";
@@ -56,6 +72,26 @@ public class FlowerInfoController : MonoBehaviour
         Sprite imageSprite = controller.spriteRenderer.sprite;
         flowerImage.sprite = imageSprite;
 
+        RenderGeneList(controller);
+    }
 
+    void ClearGenesList()
+    {
+        foreach(GameObject obj in genePanels)
+        {
+            Destroy(obj);
+        }
+        genePanels = new List<GameObject>();
+    }
+
+    void RenderGeneList(FlowerController controller)
+    {
+        for(int i = 0; i < controller.flower.genesPoss.Length; i++)
+        {
+            GameObject genePanel = Instantiate(genePanelPrefab, scrollMenuContents);
+            GenePanelController panelController = genePanel.GetComponent<GenePanelController>();
+            panelController.GiveDetails(controller.flower.genesPoss[i], controller.flower.genesProbs[i], controller.flower.type);
+            genePanels.Add(genePanel);
+        }
     }
 }

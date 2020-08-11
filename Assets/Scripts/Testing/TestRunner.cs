@@ -74,7 +74,7 @@ public class TestRunner : MonoBehaviour
         var childFlower = flower1.BreedAndShowParentGenes(flower2);
         foreach((Gene[] g1, Gene[] g2, Fraction prob, Flower f) in childFlower)
         {
-            Debug.Log(String.Format("PARENT 1: {0}, PARENT 2: {1}, PROB: {2}, CHILD: {3}", Gene.getString(g1), prob, Gene.getString(g2), f));
+            Debug.Log(String.Format("PARENT 1: {0}, PARENT 2: {1}, PROB: {2}, CHILD: {3}", Gene.GetString(g1), prob, Gene.GetString(g2), f));
         }
     }
 

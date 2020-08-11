@@ -20,6 +20,13 @@ public struct Fraction
         return (difference.numerator == 0);
     }
 
+    public float GetDecimal()
+    {
+        float num = numerator;
+        float denom = denominator;
+        return num / denom;
+    }
+
 
     public override string ToString()
     {

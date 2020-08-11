@@ -123,7 +123,6 @@ public class FlowerController : MonoBehaviour, IInteractable
 
     public void MouseButtonDown()
     {
-        Debug.Log("HI");
         beingDragged = true;
 
         SimulationController.singleton.SelectedFlower = this;

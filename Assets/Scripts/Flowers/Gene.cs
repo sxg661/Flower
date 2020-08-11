@@ -85,7 +85,7 @@ public struct Gene
         return (Convert.ToInt32(allele1) + Convert.ToInt32(allele2)).ToString();
     }
 
-    public static string getString(Gene[] genes)
+    public static string GetString(Gene[] genes)
     {
         string str = "";
         foreach(Gene gene in genes){
@@ -93,4 +93,56 @@ public struct Gene
         }
         return str;
     }
+
+    public static string FormatForGUI(Gene[] genes, FlowerType type)
+    {
+        char[] dominantGeneCodes;
+        char[] recessiveGeneCodes;
+        if (type == FlowerType.COSMOS || type == FlowerType.LILY || type == FlowerType.TULIP)
+        {
+            dominantGeneCodes = new char[] { 'R', 'Y', 'S' };
+            recessiveGeneCodes = new char[] { 'r', 'y', 's' };
+        }
+        else
+        {
+            dominantGeneCodes = new char[] { 'R', 'Y', 'W', 'S' };
+            recessiveGeneCodes = new char[] { 'r', 'y', 'W', 's' };
+        }
+
+
+        string guiStr = "";
+        for (int i = 0; i < genes.Length; i++)
+        {
+            Gene gene = genes[i];
+            if (i > dominantGeneCodes.Length)
+            {
+                continue;
+            }
+
+            char dominantCode = dominantGeneCodes[i];
+            char recessiveCode = recessiveGeneCodes[i];
+
+            switch (gene.ToString())
+            {
+                case "0":
+                    guiStr += " " + recessiveCode + recessiveCode;
+                    break;
+                case "1":
+                    guiStr += " " + dominantCode + recessiveCode;
+                    break;
+                case "2":
+                    guiStr += " " + dominantCode + dominantCode;
+                    break;
+            }
+        }
+
+        if (guiStr.Length < 1)
+        {
+            return "";
+        }
+
+        //substring to remove space at start
+        return guiStr.Substring(1, guiStr.Length - 1);
+    }
+
 }

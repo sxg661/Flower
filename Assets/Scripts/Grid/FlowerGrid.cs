@@ -177,7 +177,7 @@ public class FlowerGrid : MonoBehaviour
 
             for(int i = 0; i < offspring.genesPoss.Count(); i++)
             {
-                string offspringGeneCode = Gene.getString(offspring.genesPoss[i]);
+                string offspringGeneCode = Gene.GetString(offspring.genesPoss[i]);
                 if(FlowerColourLookup.lookup.colourLookup[type][offspringGeneCode] == colour)
                 {
                     if (!genesOffspring.ContainsKey(offspringGeneCode))
@@ -224,7 +224,7 @@ public class FlowerGrid : MonoBehaviour
                 liklihoodParent += liklihood;
 
                 Fraction[] geneLiklilsGivenPair = new Fraction[flower.genesPoss.Length];
-                String[] geneIDs = flower.genesPoss.Select(g => Gene.getString(g)).ToArray();
+                String[] geneIDs = flower.genesPoss.Select(g => Gene.GetString(g)).ToArray();
 
                 Flower flowerOther = GetFlower(xOther, yOther);
 
@@ -238,12 +238,12 @@ public class FlowerGrid : MonoBehaviour
                 foreach ((Gene[] genes, Gene[] genesOther, Fraction probGenes, Flower offpsring) in offpsringWithParentGenes)
                 {
 
-                    string gID = Gene.getString(genes);
+                    string gID = Gene.GetString(genes);
                     int index = Array.IndexOf(geneIDs, gID);
 
                     for(int i = 0; i < offpsring.genesPoss.Length; i++)
                     {
-                        String offpsringGeneID = Gene.getString(offpsring.genesPoss[i]);
+                        String offpsringGeneID = Gene.GetString(offpsring.genesPoss[i]);
                         if(FlowerColourLookup.lookup.colourLookup[flower.type][offpsringGeneID] == offpsringColour)
                         {
                             offspringProbsGivenGenes[index] += offpsring.genesProbs[i] * probGenes;
@@ -402,7 +402,7 @@ public class FlowerGrid : MonoBehaviour
             Fraction probOfColourGivenParents = new Fraction(0, 0);
             for(int j = 0; j < offspring.genesPoss.Length; j++)
             {
-                string geneID = Gene.getString(offspring.genesPoss[j]);
+                string geneID = Gene.GetString(offspring.genesPoss[j]);
                 FlowerColour colour = FlowerColourLookup.lookup.colourLookup[offspring.type][geneID];
                 if(colour == offspringColour)
                 {

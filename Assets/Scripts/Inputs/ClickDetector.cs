@@ -47,13 +47,6 @@ public class ClickDetector : MonoBehaviour
         RaycastHit2D hit;
 
         hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
-        if (hit)
-        {
-            Debug.Log(hit);
-            Debug.Log(overGUI);
-        }
-
-
 
         IInteractable interactable = null;
 

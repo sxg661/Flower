@@ -171,6 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleText: {fileID: 8558092944024589828}
   flowerImage: {fileID: 8558092944761434293}
+  scrollMenuContents: {fileID: 5141718210723999743}
+  genePanelPrefab: {fileID: 2728191974086781020, guid: 9265e04b9c628b746a3eeb51e4070d60,
+    type: 3}
 --- !u!1 &8558092944761434295
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,6 +495,12 @@ PrefabInstance:
 --- !u!224 &5141718209936498685 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3575709981976077449, guid: be2d968399cca014bb8905c50770c1b2,
+    type: 3}
+  m_PrefabInstance: {fileID: 8558092944939989876}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5141718210723999743 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3575709982197339275, guid: be2d968399cca014bb8905c50770c1b2,
     type: 3}
   m_PrefabInstance: {fileID: 8558092944939989876}
   m_PrefabAsset: {fileID: 0}

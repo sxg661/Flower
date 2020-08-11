@@ -61,7 +61,7 @@ public class Flower
         string str = String.Format("Type: {0},  Colour: {1}  ", type, colour);
         for (int i = 0; i < genesPoss.Length; i++)
         {
-            str = String.Format("{0}; {1}). {2} with {3} liklihood  ", str, i, Gene.getString(genesPoss[i]), genesProbs[i]);
+            str = String.Format("{0}; {1}). {2} with {3} liklihood  ", str, i, Gene.GetString(genesPoss[i]), genesProbs[i]);
         }
         return str;
     }
@@ -124,7 +124,7 @@ public class Flower
 
                     for(int k = 0; k < possChildren.Length; k++)
                     {
-                        string key = Gene.getString(possChildren[k]);
+                        string key = Gene.GetString(possChildren[k]);
                         if (!allPoss.ContainsKey(key))
                         {
                             allPoss[key] = (possChildren[k], new Fraction(0,0));
