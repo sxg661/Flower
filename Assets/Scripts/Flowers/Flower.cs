@@ -25,11 +25,21 @@ public class Flower
     public Flower(string[] geneCodes, Fraction[] genesProbs, FlowerType type, FlowerColour colour)
     {
         //convert the string gene codes into arrays of Gene objects e.g. 210 to [Gene(TT), Gene(TF) , Gene(FF)].
-        genesPoss = geneCodes.Select(x => x.Select(g => new Gene(g)).ToArray()).ToArray();
+        genesPoss = geneCodes.Select(x => Gene.GetGeneArray(x)).ToArray();
 
         this.genesProbs = genesProbs;
         this.type = type;
         this.colour = colour;
+
+        Validate();
+    }
+
+    public Flower(string geneCode, FlowerType type)
+    {
+        genesPoss = new Gene[][] { Gene.GetGeneArray(geneCode) };
+        genesProbs = new Fraction[] { new Fraction(1, 1) };
+        colour = FlowerColourLookup.lookup.colourLookup[type][geneCode];
+        this.type = type;
 
         Validate();
     }
@@ -44,6 +54,7 @@ public class Flower
             type = FlowerType.NONE;
         }
 
+        //Remove genes with probability zero
         var newGenesPoss = new List<Gene[]>();
         var newGenesProbs = new List<Fraction>();
         for (int i = 0; i < genesPoss.Length; i++)
@@ -54,6 +65,8 @@ public class Flower
                 newGenesProbs.Add(genesProbs[i]);
             }
         }
+        genesPoss = newGenesPoss.ToArray();
+        genesProbs = newGenesProbs.ToArray();
     }
 
     public override string ToString()

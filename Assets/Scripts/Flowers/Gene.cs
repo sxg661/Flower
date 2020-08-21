@@ -45,6 +45,17 @@ public struct Gene
         }
     }
 
+    public static Gene[] GetGeneArray(String geneCode)
+    {
+        Gene[] genes = new Gene[geneCode.Length];
+        for(int i = 0; i < geneCode.Length; i++)
+        {
+            char geneChar = geneCode[i];
+            genes[i] = new Gene(geneChar);
+        }
+        return genes;
+    }
+
     public (Gene[], Fraction[]) BreedWith(Gene other)
     {
         if (allele1 == allele2 && other.allele1 == other.allele2)
@@ -98,14 +109,24 @@ public struct Gene
     {
         char[] dominantGeneCodes;
         char[] recessiveGeneCodes;
+
         if (type == FlowerType.COSMOS || type == FlowerType.LILY || type == FlowerType.TULIP)
         {
             dominantGeneCodes = new char[] { 'R', 'Y', 'S' };
             recessiveGeneCodes = new char[] { 'r', 'y', 's' };
         }
+        else if (type == FlowerType.WINDFLOWER)
+        {
+            dominantGeneCodes = new char[] { 'R', 'O', 'w' };
+            recessiveGeneCodes = new char[] { 'r', 'o', 'W' };
+        }
         else
         {
-            dominantGeneCodes = new char[] { 'R', 'Y', 'W', 'S' };
+            //IMPORTANT
+            //For some reason in the flower CSVs the W gene is encoded in reverse with 0 meaning two dominant!
+            //Switching them in the arrays is not strictly necessary, as the special case in considered the switch statement below, 
+            // However, they are still flipped here for readability purposes.
+            dominantGeneCodes = new char[] { 'R', 'Y', 'w', 'S' };
             recessiveGeneCodes = new char[] { 'r', 'y', 'W', 's' };
         }
 
@@ -128,7 +149,15 @@ public struct Gene
                     guiStr += " " + recessiveCode + recessiveCode;
                     break;
                 case "1":
-                    guiStr += " " + dominantCode + recessiveCode;
+                    //Captial Letter goes first, W gene is funny, see note labled IMPORTANT above.
+                    if(dominantCode == 'w')
+                    {
+                        guiStr += " " + recessiveCode + dominantCode;
+                    }
+                    else
+                    {
+                        guiStr += " " + dominantCode + recessiveCode;
+                    }
                     break;
                 case "2":
                     guiStr += " " + dominantCode + dominantCode;
