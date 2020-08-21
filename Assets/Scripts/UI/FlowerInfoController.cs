@@ -37,13 +37,6 @@ public class FlowerInfoController : MonoBehaviour
         currentController = null;
     }
 
-    string FormatCases(string str)
-    {
-        string strFirst = str.Substring(0, 1).ToUpper();
-        string strSecond = str.Substring(1, str.Length - 1).ToLower();
-        return strFirst + strSecond;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -68,7 +61,7 @@ public class FlowerInfoController : MonoBehaviour
 
         currentController = controller;
 
-        string title = string.Format("{0} {1}", FormatCases(controller.flower.colour.ToString()), FormatCases(controller.flower.type.ToString()));
+        string title = controller.flower.GetName();
         titleText.text = title;
 
         Sprite imageSprite = controller.spriteRenderer.sprite;

@@ -12,6 +12,24 @@ public class Flower
     public Gene[][] genesPoss;
     public Fraction[] genesProbs;
 
+
+    string FormatCases(string str)
+    {
+        string strFirst = str.Substring(0, 1).ToUpper();
+        string strSecond = str.Substring(1, str.Length - 1).ToLower();
+        return strFirst + strSecond;
+    }
+
+    public string GetName()
+    {
+        return String.Format("{0} {1}", FormatCases(colour.ToString()), FormatCases(type.ToString()));
+    }
+
+    public string GetFilePath()
+    {
+        return String.Format("{0}/{1}", type.ToString(), colour.ToString());
+    }
+
     public Flower(Gene[][] genesPoss, Fraction[] genesProbs, FlowerType type, FlowerColour colour)
     {
         this.genesPoss = genesPoss;
