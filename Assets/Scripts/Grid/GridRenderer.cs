@@ -55,12 +55,14 @@ public class GridRenderer : MonoBehaviour
         }
 
         //Add a flower to grid for test
-        Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.COSMOS, FlowerColour.PINK);
-        GameObject flowerObj = Instantiate(flowerPrefab);
+        Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.WINDFLOWER, FlowerColour.PINK);
+        GameObject flowerObj = Instantiate(flowerPrefab, new Vector3(0,0,0), Quaternion.identity);
         flowerObj.GetComponent<FlowerController>().GiveDetails(flower, 3, 3);
-        
 
-        
+        //Add a flower to grid for test
+        Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.ROSE, FlowerColour.BLUE);
+        GameObject flowerObj2 = Instantiate(flowerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        flowerObj2.GetComponent<FlowerController>().GiveDetails(flower2, 5, 5);
 
     }
 

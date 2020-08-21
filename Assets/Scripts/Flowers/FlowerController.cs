@@ -53,7 +53,6 @@ public class FlowerController : MonoBehaviour, IInteractable
         }
 
         //Change the sprite
-        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = flowerSprite;
     }
 
@@ -70,10 +69,12 @@ public class FlowerController : MonoBehaviour, IInteractable
         if (beingDragged)
         {
             spriteRenderer.color = GhostColor;
+            spriteRenderer.sortingOrder = 1;
         }
         else
         {
             spriteRenderer.color = DefaultColor;
+            spriteRenderer.sortingOrder = 0;
         }
     }
 

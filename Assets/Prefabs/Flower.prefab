@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: 1338478672031443886}
   - component: {fileID: 1338478672031443884}
   - component: {fileID: 6858540056296460452}
-  - component: {fileID: 9049916313829299533}
   m_Layer: 0
   m_Name: Flower
   m_TagString: Untagged
@@ -174,11 +173,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36aeabf3a6f318a44a365744a7491764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1338478672031443886}
   selectedImage: {fileID: 8427680181473513103}
   GhostColor: {r: 1, g: 1, b: 1, a: 0.65882355}
   DefaultColor: {r: 1, g: 1, b: 1, a: 1}
   x: 0
   y: 0
+  beingDragged: 0
 --- !u!61 &6858540056296460452
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -205,24 +206,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.91, y: 1}
   m_EdgeRadius: 0
---- !u!50 &9049916313829299533
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338478672031443887}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0

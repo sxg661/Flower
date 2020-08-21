@@ -32,6 +32,9 @@ public class FlowerInfoController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        titleText.text = "No Flower Selected";
+        flowerImage.enabled = false;
+        currentController = null;
     }
 
     string FormatCases(string str)
