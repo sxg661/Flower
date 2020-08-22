@@ -8,6 +8,8 @@ public class SimulationController : MonoBehaviour
 
     public FlowerController SelectedFlower;
 
+    public FlowerGhostController currentGhost;
+
     private void Awake()
     {
         singleton = this;
@@ -27,6 +29,11 @@ public class SimulationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentGhost != null)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SelectedFlower = null;

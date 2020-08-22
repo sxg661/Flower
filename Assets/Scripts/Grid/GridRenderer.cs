@@ -8,9 +8,6 @@ using UnityEngine;
 public class GridRenderer : MonoBehaviour
 {
 
-    [SerializeField]
-    GameObject flowerPrefab;
-
     public static Vector3 GetWorldPos(int x, int y, float width, float height)
     {
         return new Vector3(x + width/2, y + height/2, 0);
@@ -54,18 +51,7 @@ public class GridRenderer : MonoBehaviour
             AddGhosts();
         }
 
-        //Add a flower to grid for test
-        Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.WINDFLOWER, FlowerColour.PINK);
-        GameObject flowerObj = Instantiate(flowerPrefab, new Vector3(0,0,0), Quaternion.identity);
-        flowerObj.GetComponent<FlowerController>().GiveDetails(flower, 3, 3);
-
-        //Add a flower to grid for test
-        Flower flower2 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.ROSE, FlowerColour.BLUE);
-        GameObject flowerObj2 = Instantiate(flowerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        flowerObj2.GetComponent<FlowerController>().GiveDetails(flower2, 5, 5);
-
     }
-
 
 
     void AddGhosts()
@@ -140,7 +126,7 @@ public class GridRenderer : MonoBehaviour
     }
 
 
-    public void ExpandShop()
+    public void ExpandGrid()
     {
         DestroyGhosts();
         DestroyWalls();

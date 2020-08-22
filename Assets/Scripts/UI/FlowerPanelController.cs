@@ -11,6 +11,9 @@ public class FlowerPanelController : MonoBehaviour
     [SerializeField]
     Text flowerNameText;
 
+    [SerializeField]
+    GameObject flowerGhostPrefab;
+
     public Flower flower;
 
     //e.g. Seed or Island
@@ -36,7 +39,13 @@ public class FlowerPanelController : MonoBehaviour
             flowerName = string.Format("{0} {1}", extraText, flowerName);
         }
         flowerNameText.text = flowerName;
-    
+    }
+
+    public void CreateGhost()
+    {
+        GameObject obj = Instantiate(flowerGhostPrefab, Vector3.zero, Quaternion.identity);
+        obj.GetComponent<FlowerGhostController>().flower = flower;
+
     }
 
 }

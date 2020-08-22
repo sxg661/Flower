@@ -10,6 +10,9 @@ public class FlowerGrid : MonoBehaviour
     public static FlowerGrid flowerGrid;
 
     [SerializeField]
+    GameObject FlowerPrefab;
+
+    [SerializeField]
     public int gridWidth = 10;
 
     [SerializeField]
@@ -92,6 +95,24 @@ public class FlowerGrid : MonoBehaviour
     }
 
     /// <summary>
+    /// Adds a flower to a point in the grid and renders it too on the grid.
+    /// </summary>
+    /// <param name="flower"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public bool AddAndRenderFlower(Flower flower, int x, int y)
+    {
+        if (AddFlower(flower, x, y))
+        {
+            GameObject flowerObj = Instantiate(FlowerPrefab, new Vector3(0, 0, 5), Quaternion.identity);
+            flowerObj.GetComponent<FlowerController>().GiveDetails(flower, x, y);
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
     /// Add a flower to a point in the grid.
     /// Will fail if point is not in grid bounds, or if the point is already occupied by another flower.
     /// </summary>
@@ -112,6 +133,7 @@ public class FlowerGrid : MonoBehaviour
         }
 
         grid[y][x] = flower;
+
         return true;
     }
 

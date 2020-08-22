@@ -45,7 +45,7 @@ public class FlowerController : MonoBehaviour, IInteractable
         FlowerGrid.flowerGrid.AddFlower(flower, x, y);
 
         //Get the correct image
-        string imageName = string.Format("{0}/{1}", flower.type, flower.colour);
+        string imageName = flower.GetFilePath();
         Sprite flowerSprite = Resources.Load<Sprite>(imageName);
         if (flowerSprite == null)
         {
@@ -127,6 +127,6 @@ public class FlowerController : MonoBehaviour, IInteractable
         beingDragged = true;
 
         SimulationController.singleton.SelectedFlower = this;
-        
+ 
     }
 }

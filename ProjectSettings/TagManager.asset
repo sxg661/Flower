@@ -50,3 +50,9 @@ TagManager:
   - name: Flower
     uniqueID: 1654554081
     locked: 0
+  - name: UI
+    uniqueID: 2253326267
+    locked: 0
+  - name: Ghost
+    uniqueID: 3753972531
+    locked: 0
