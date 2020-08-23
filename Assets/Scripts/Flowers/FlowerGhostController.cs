@@ -21,6 +21,7 @@ public class FlowerGhostController : MonoBehaviour, IInteractable
             Destroy(SimulationController.singleton.currentGhost.gameObject);
         }
         SimulationController.singleton.currentGhost = this;
+        SimulationController.singleton.selectedFlower = null;
 
         string spriteFilePath = flower.GetFilePath();
         Sprite flowerSprite = Resources.Load<Sprite>(spriteFilePath);

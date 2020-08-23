@@ -6,7 +6,7 @@ public class SimulationController : MonoBehaviour
 {
     public static SimulationController singleton;
 
-    public FlowerController SelectedFlower;
+    public FlowerController selectedFlower;
 
     public FlowerGhostController currentGhost;
 
@@ -18,12 +18,12 @@ public class SimulationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SelectedFlower = null;
+        selectedFlower = null;
     }
 
     public void ClearSelection()
     {
-        SelectedFlower = null;
+        selectedFlower = null;
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class SimulationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SelectedFlower = null;
+            selectedFlower = null;
         }
     }
 }

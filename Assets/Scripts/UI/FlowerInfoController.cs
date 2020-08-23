@@ -40,7 +40,7 @@ public class FlowerInfoController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FlowerController controller = SimulationController.singleton.SelectedFlower;
+        FlowerController controller = SimulationController.singleton.selectedFlower;
 
         if (controller == currentController)
         {

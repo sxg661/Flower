@@ -60,11 +60,20 @@ public class FlowerController : MonoBehaviour, IInteractable
     {
         UpdatePosition();
         UpdateAppearance();
+
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Delete))
+        {
+            if (SimulationController.singleton.selectedFlower == this)
+            {
+                FlowerGrid.flowerGrid.RemoveFlower(x, y);
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void UpdateAppearance()
     {
-        selectedImage.enabled = SimulationController.singleton.SelectedFlower == this;
+        selectedImage.enabled = SimulationController.singleton.selectedFlower == this;
 
         if (beingDragged)
         {
@@ -124,9 +133,13 @@ public class FlowerController : MonoBehaviour, IInteractable
 
     public void MouseButtonDown()
     {
+        if (SimulationController.singleton.currentGhost != null)
+        {
+            return;
+        }
         beingDragged = true;
 
-        SimulationController.singleton.SelectedFlower = this;
+        SimulationController.singleton.selectedFlower = this;
  
     }
 }

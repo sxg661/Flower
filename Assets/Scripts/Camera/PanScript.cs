@@ -46,7 +46,7 @@ public class PanScript : MonoBehaviour
 
             lastMousePos = thisMousePos;
 
-            if(SimulationController.singleton.SelectedFlower != null && SimulationController.singleton.SelectedFlower.beingDragged)
+            if(SimulationController.singleton.selectedFlower != null && SimulationController.singleton.selectedFlower.beingDragged)
             {
                 mouseDown = false;
             }
