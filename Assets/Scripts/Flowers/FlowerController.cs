@@ -137,6 +137,7 @@ public class FlowerController : MonoBehaviour, IInteractable
         {
             return;
         }
+
         beingDragged = true;
 
         SimulationController.singleton.selectedFlower = this;
