@@ -26,6 +26,10 @@ public class PanScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SimulationController.singleton.guiOpen)
+        {
+            return; 
+        }
 
         Vector3 movement = new Vector3(UnityEngine.Input.GetAxis("Horizontal"), UnityEngine.Input.GetAxis("Vertical"), 0) * ARROWSPEED;
 

@@ -10,6 +10,8 @@ public class SimulationController : MonoBehaviour
 
     public FlowerGhostController currentGhost;
 
+    public bool guiOpen;
+
     private void Awake()
     {
         singleton = this;

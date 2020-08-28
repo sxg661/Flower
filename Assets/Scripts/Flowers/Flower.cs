@@ -13,7 +13,7 @@ public class Flower
     public Fraction[] genesProbs;
 
 
-    string FormatCases(string str)
+    public static string FormatCases(string str)
     {
         string strFirst = str.Substring(0, 1).ToUpper();
         string strSecond = str.Substring(1, str.Length - 1).ToLower();
