@@ -42,11 +42,6 @@ public class FlowerInfoController : MonoBehaviour
     {
         FlowerController controller = SimulationController.singleton.selectedFlower;
 
-        if (controller == currentController)
-        {
-            return;
-        }
-
         ClearGenesList();
 
         if (controller == null)

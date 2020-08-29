@@ -15,6 +15,9 @@ public class ClickDetector : MonoBehaviour
     GameObject currentObject;
     public bool clickDown;
     public bool overGUI;
+    public bool destroy;
+    public bool escape;
+    bool buttonUp;
 
     private void Awake()
     {
@@ -28,6 +31,9 @@ public class ClickDetector : MonoBehaviour
         currentInteractable = null;
         currentObject = null;
         clickDown = false;
+        destroy = false;
+        escape = false;
+        
     }
 
 
@@ -38,7 +44,9 @@ public class ClickDetector : MonoBehaviour
         {
             clickDown = true;
         }
-        overGUI = system.IsPointerOverGameObject();
+        overGUI = system.IsPointerOverGameObject() || SimulationController.singleton.guiOpen;
+        destroy = Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Delete);
+        escape = Input.GetKeyDown(KeyCode.Escape);
     }
 
     void FixedUpdate()

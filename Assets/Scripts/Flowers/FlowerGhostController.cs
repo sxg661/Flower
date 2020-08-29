@@ -44,7 +44,7 @@ public class FlowerGhostController : MonoBehaviour, IInteractable
 
         transform.position = GridRenderer.GetWorldPos(newX, newY, 1, 1);
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (ClickDetector.clickDetector.escape || ClickDetector.clickDetector.destroy)
         {
             Destroy(gameObject);
         }

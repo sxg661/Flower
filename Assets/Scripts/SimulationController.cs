@@ -25,6 +25,7 @@ public class SimulationController : MonoBehaviour
 
     public void ClearSelection()
     {
+        Debug.Log("THIS HAPPENS");
         selectedFlower = null;
     }
 
@@ -36,9 +37,6 @@ public class SimulationController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            selectedFlower = null;
-        }
+
     }
 }

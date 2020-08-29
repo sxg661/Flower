@@ -45,7 +45,6 @@ public class FlowerPanelController : MonoBehaviour
     {
         GameObject obj = Instantiate(flowerGhostPrefab, Vector3.zero, Quaternion.identity);
         obj.GetComponent<FlowerGhostController>().flower = flower;
-
     }
 
 }

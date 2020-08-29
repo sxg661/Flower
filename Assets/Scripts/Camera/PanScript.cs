@@ -26,7 +26,7 @@ public class PanScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SimulationController.singleton.guiOpen)
+        if (ClickDetector.clickDetector.overGUI)
         {
             return; 
         }

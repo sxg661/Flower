@@ -25,6 +25,7 @@ public class FlowerController : MonoBehaviour, IInteractable
 
     public bool beingDragged;
 
+
     public void Awake()
     {
     }
@@ -61,13 +62,20 @@ public class FlowerController : MonoBehaviour, IInteractable
         UpdatePosition();
         UpdateAppearance();
 
-        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Delete))
+        if (ClickDetector.clickDetector.destroy)
         {
             if (SimulationController.singleton.selectedFlower == this)
             {
+                SimulationController.singleton.ClearSelection();
                 FlowerGrid.flowerGrid.RemoveFlower(x, y);
                 Destroy(gameObject);
             }
+        }
+
+        if (ClickDetector.clickDetector.escape)
+        {
+            SimulationController.singleton.ClearSelection();
+            beingDragged = false;
         }
     }
 
@@ -94,10 +102,10 @@ public class FlowerController : MonoBehaviour, IInteractable
             Vector3 positioin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             (int newX, int newY) = GridRenderer.GetTileNum(positioin);
 
-            if (Input.GetMouseButtonUp(0) || Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetMouseButtonUp(0))
             {
                 beingDragged = false;
-                if (!FlowerGrid.IsValidTilePlacement(newX, newY) || Input.GetKeyDown(KeyCode.Escape))
+                if (!FlowerGrid.IsValidTilePlacement(newX, newY))
                 {
                     transform.position = GridRenderer.GetWorldPos(x, y, 1, 1);
                     return;
@@ -141,6 +149,5 @@ public class FlowerController : MonoBehaviour, IInteractable
         beingDragged = true;
 
         SimulationController.singleton.selectedFlower = this;
- 
     }
 }

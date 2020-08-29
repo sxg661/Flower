@@ -42,6 +42,29 @@ public class FlowerColourLookup : MonoBehaviour
         return new Flower(possibleGenes, probabilities, type,colour);
     }
 
+    /// <summary>
+    /// Gets a list of the possible flower colours for a given type. This is useful because a rose for example has yellow
+    /// as a possible colour, but a windflower does not.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns>List of FlowerColour enum values of possible colours.</returns>
+    public List<FlowerColour> GetPossibleColoursOfType(FlowerType type)
+    {
+        var possibleColours = new List<FlowerColour>();
+
+        var typeColourLookup = geneLookup[type];
+
+        foreach (FlowerColour colour in Enum.GetValues(typeof(FlowerColour)))
+        {
+            if (typeColourLookup.ContainsKey(colour))
+            {
+                possibleColours.Add(colour);
+            }
+        }
+
+        return possibleColours;
+    }
+
 
     /// <summary>
     /// Reads the CSV files found in the FlowerData folder within the base lookup folder. 
