@@ -17,7 +17,10 @@ public class CustomFlowerMenuController : MonoBehaviour
     Text titleText;
 
     [SerializeField]
-    GameObject scrollUI;
+    GameObject scrollMenuObject;
+
+    [SerializeField]
+    GameObject scrollContentsObj;
 
     [SerializeField]
     GameObject geneUI;
@@ -30,8 +33,14 @@ public class CustomFlowerMenuController : MonoBehaviour
     [SerializeField]
     Button backButton;
 
+    [SerializeField]
+    GameObject flowerPanelPrefab;
+
     List<Action> openPageActions;
     int currentPage;
+
+    int scrollMenuWidth;
+    List<GameObject> scrollMenuContents;
 
     private void Awake()
     {
@@ -44,7 +53,16 @@ public class CustomFlowerMenuController : MonoBehaviour
 
     public void Open()
     {
-        if(openPageActions == null)
+        if(scrollMenuContents != null)
+        {
+            ClearScrollMenu();
+        }
+        scrollMenuContents = new List<GameObject>();
+
+        //FIND ALTERNATIVE TO HARD CODING THIS VALUE
+        scrollMenuWidth = 282;
+
+        if (openPageActions == null)
         {
             openPageActions = new List<Action> { ChooseType, ChooseColour, CustomiseGenes };
         }
@@ -122,17 +140,46 @@ public class CustomFlowerMenuController : MonoBehaviour
 
     }
 
+    private void ClearScrollMenu()
+    {
+        foreach(GameObject obj in scrollMenuContents)
+        {
+            Destroy(obj);
+        }
+        scrollMenuContents = new List<GameObject>();
+    }
+
     private void ChooseType()
     {
-        scrollUI.SetActive(true);
+        ClearScrollMenu();
+
+        scrollMenuObject.SetActive(true);
         geneUI.SetActive(false);
+
+        var types = Enum.GetValues(typeof(FlowerType));
+
+        foreach (FlowerType type in types)
+        {
+            if (type == FlowerType.NONE)
+            {
+                continue;
+            }
+ 
+            Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(type, FlowerColour.WHITE);
+            GameObject panel = Instantiate(flowerPanelPrefab, scrollContentsObj.transform);
+            FlowerPanelController controller = panel.GetComponent<FlowerPanelController>();
+            controller.GiveInfo(scrollMenuWidth, flower, Flower.FormatCases(type.ToString()), null);
+            scrollMenuContents.Add(panel);
+        }
 
         titleText.text = "Choose Flower Type";
     }
 
     private void ChooseColour()
     {
-        scrollUI.SetActive(true);
+        ClearScrollMenu();
+
+        scrollMenuObject.SetActive(true);
         geneUI.SetActive(false);
 
         titleText.text = string.Format("Choose {0} Colour", Flower.FormatCases(myType.ToString()));
@@ -140,7 +187,7 @@ public class CustomFlowerMenuController : MonoBehaviour
 
     private void CustomiseGenes()
     {
-        scrollUI.SetActive(false);
+        scrollMenuObject.SetActive(false);
         geneUI.SetActive(true);
 
         myFlower = FlowerColourLookup.lookup.GetFlowerWithColour(myType, myColour);

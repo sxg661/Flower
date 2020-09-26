@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FlowerSelectController : MonoBehaviour
 {
@@ -19,12 +20,8 @@ public class FlowerSelectController : MonoBehaviour
         foreach(Flower flower in PredefinedFlowers.seedFlowers)
         {
             GameObject panel = Instantiate(flowerPanelPrefab, scrollContents);
-            RectTransform rectTransform = panel.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(width, rectTransform.rect.height);
-
             FlowerPanelController controller = panel.GetComponent<FlowerPanelController>();
-            controller.flower = flower;
-            controller.extraText = "Seed";
+            controller.GiveInfo(width, flower, string.Format("{0} {1}", "Seed", flower.GetName()), controller.CreateGhost);
         }
     }
 }

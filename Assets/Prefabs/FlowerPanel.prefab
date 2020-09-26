@@ -272,7 +272,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4101598541983899909}
-        m_MethodName: CreateGhost
+        m_MethodName: Click
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -300,4 +300,9 @@ MonoBehaviour:
   flowerNameText: {fileID: 3155126545743751873}
   flowerGhostPrefab: {fileID: 1338478672031443887, guid: 79b2a8236a9020441b8399d91d9c13c7,
     type: 3}
+  onClickAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   extraText: 
