@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,11 @@ public class CustomFlowerMenuController : MonoBehaviour
     GameObject geneUI;
 
     [SerializeField]
+    Image geneUIImage;
+
+    [SerializeField]
     Text doneButtonText;
+
     [SerializeField]
     Button doneButton;
 
@@ -36,11 +41,19 @@ public class CustomFlowerMenuController : MonoBehaviour
     [SerializeField]
     GameObject flowerPanelPrefab;
 
+    [SerializeField]
+    Color optionSelectedColour;
+
+    [SerializeField]
+    Color optionUnselectedColour;
+
     List<Action> openPageActions;
     int currentPage;
 
     int scrollMenuWidth;
     List<GameObject> scrollMenuContents;
+
+    Button selectedButton;
 
     private void Awake()
     {
@@ -149,9 +162,39 @@ public class CustomFlowerMenuController : MonoBehaviour
         scrollMenuContents = new List<GameObject>();
     }
 
+    private void ChangeButtonColour(Button button, Color colour)
+    {
+        ColorBlock colours = button.colors;
+        colours.normalColor = colour;
+        button.colors = colours;
+    }
+
+    private void ClearSelection()
+    {
+        if (selectedButton != null)
+        {
+            ChangeButtonColour(selectedButton, optionUnselectedColour);
+        }
+
+    }
+
+    private void HandleButtonClick(Button button, FlowerPanelController controller)
+    {
+        ClearSelection();
+
+        ChangeButtonColour(button, optionSelectedColour);
+        selectedButton = button;
+
+        myType = controller.flower.type;
+        myColour = controller.flower.colour;
+        
+
+    }
+
     private void ChooseType()
     {
         ClearScrollMenu();
+        ClearSelection();
 
         scrollMenuObject.SetActive(true);
         geneUI.SetActive(false);
@@ -168,7 +211,16 @@ public class CustomFlowerMenuController : MonoBehaviour
             Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(type, FlowerColour.WHITE);
             GameObject panel = Instantiate(flowerPanelPrefab, scrollContentsObj.transform);
             FlowerPanelController controller = panel.GetComponent<FlowerPanelController>();
-            controller.GiveInfo(scrollMenuWidth, flower, Flower.FormatCases(type.ToString()), null);
+            Button button = panel.GetComponent<Button>();
+            ChangeButtonColour(button, optionUnselectedColour);
+
+            controller.GiveInfo(
+                scrollMenuWidth, 
+                flower, 
+                Flower.FormatCases(type.ToString()), 
+                () => HandleButtonClick(button, controller));
+            
+
             scrollMenuContents.Add(panel);
         }
 
@@ -178,6 +230,26 @@ public class CustomFlowerMenuController : MonoBehaviour
     private void ChooseColour()
     {
         ClearScrollMenu();
+        ClearSelection();
+
+        List<FlowerColour> colours = FlowerColourLookup.lookup.geneLookup[myType].Keys.ToList();
+        foreach(FlowerColour flowerCol in colours)
+        {
+            Flower flower = FlowerColourLookup.lookup.GetFlowerWithColour(myType, flowerCol);
+            GameObject panel = Instantiate(flowerPanelPrefab, scrollContentsObj.transform);
+            FlowerPanelController controller = panel.GetComponent<FlowerPanelController>();
+            Button button = panel.GetComponent<Button>();
+            ChangeButtonColour(button, optionUnselectedColour);
+
+            controller.GiveInfo(
+                    scrollMenuWidth,
+                    flower,
+                    Flower.FormatCases(flower.GetName()),
+                    () => HandleButtonClick(button, controller));
+            
+            scrollMenuContents.Add(panel);
+
+        }
 
         scrollMenuObject.SetActive(true);
         geneUI.SetActive(false);
@@ -191,6 +263,9 @@ public class CustomFlowerMenuController : MonoBehaviour
         geneUI.SetActive(true);
 
         myFlower = FlowerColourLookup.lookup.GetFlowerWithColour(myType, myColour);
+
+        Sprite sprite = Resources.Load<Sprite>(myFlower.GetFilePath());
+        geneUIImage.sprite = sprite;
 
         titleText.text = myFlower.GetName();
     }

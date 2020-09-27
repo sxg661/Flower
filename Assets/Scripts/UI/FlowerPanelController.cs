@@ -36,7 +36,8 @@ public class FlowerPanelController : MonoBehaviour
         int width, 
         Flower flower, 
         string text,
-        Action clickAction)
+        Action clickAction
+        )
     { 
         SetWidth(width);
         this.flower = flower;

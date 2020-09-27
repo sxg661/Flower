@@ -79,8 +79,10 @@ public class FlowerInfoController : MonoBehaviour
         for(int i = 0; i < controller.flower.genesPoss.Length; i++)
         {
             GameObject genePanel = Instantiate(genePanelPrefab, scrollMenuContents);
+
             GenePanelController panelController = genePanel.GetComponent<GenePanelController>();
             panelController.GiveDetails(controller.flower.genesPoss[i], controller.flower.genesProbs[i], controller.flower.type);
+
             genePanels.Add(genePanel);
         }
     }
