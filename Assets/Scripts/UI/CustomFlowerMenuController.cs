@@ -18,7 +18,7 @@ public class CustomFlowerMenuController : MonoBehaviour
     Text titleText;
 
     [SerializeField]
-    GameObject scrollMenuObject;
+    GameObject scrollMenuPanel;
 
     [SerializeField]
     GameObject scrollContentsObj;
@@ -67,7 +67,7 @@ public class CustomFlowerMenuController : MonoBehaviour
         scrollMenuContents = new List<GameObject>();
 
         //FIND ALTERNATIVE TO HARD CODING THIS VALUE
-        scrollMenuWidth = 282;
+        scrollMenuWidth = 382;
 
         if (openPageActions == null)
         {
@@ -173,7 +173,7 @@ public class CustomFlowerMenuController : MonoBehaviour
     {
         ClearScrollMenu();
 
-        scrollMenuObject.SetActive(true);
+        scrollMenuPanel.SetActive(true);
         geneUI.SetActive(false);
 
         var types = Enum.GetValues(typeof(FlowerType));
@@ -225,7 +225,7 @@ public class CustomFlowerMenuController : MonoBehaviour
 
         }
 
-        scrollMenuObject.SetActive(true);
+        scrollMenuPanel.SetActive(true);
         geneUI.SetActive(false);
 
         titleText.text = string.Format("Choose {0} Colour", Flower.FormatCases(myType.ToString()));
@@ -233,7 +233,7 @@ public class CustomFlowerMenuController : MonoBehaviour
 
     private void CustomiseGenes()
     {
-        scrollMenuObject.SetActive(false);
+        scrollMenuPanel.SetActive(false);
         geneUI.SetActive(true);
 
         myFlower = FlowerColourLookup.lookup.GetFlowerWithColour(myType, myColour);
