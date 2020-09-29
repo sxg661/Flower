@@ -27,31 +27,31 @@ public class TestRunner : MonoBehaviour
     void TestAdjSquares()
     {
         int x = 0, y = 0;
-        (List<int> adjx, List<int> adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (List<int> adjx, List<int> adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x,y) = (FlowerGrid.flowerGrid.gridWidth - 1, 7);
-        (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (x,y) = (SimulationController.singleton.flowerGrid.gridWidth - 1, 7);
+        (adjx, adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x, y) = (4, FlowerGrid.flowerGrid.gridHeight - 1);
-        (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (x, y) = (4, SimulationController.singleton.flowerGrid.gridHeight - 1);
+        (adjx, adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
         (x, y) = (2, 9);
-        (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (adjx, adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
         (x, y) = (0, 9);
-        (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (adjx, adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x, y) = (0, FlowerGrid.flowerGrid.gridHeight - 1);
-        (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (x, y) = (0, SimulationController.singleton.flowerGrid.gridHeight - 1);
+        (adjx, adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
 
-        (x, y) = (FlowerGrid.flowerGrid.gridWidth- 1, FlowerGrid.flowerGrid.gridHeight - 1);
-        (adjx, adjy) = FlowerGrid.getAdjacentSquares(x, y);
+        (x, y) = (SimulationController.singleton.flowerGrid.gridWidth - 1, SimulationController.singleton.flowerGrid.gridHeight - 1);
+        (adjx, adjy) = SimulationController.singleton.flowerGrid.getAdjacentSquares(x, y);
         Debug.Log(String.Format("{1} {2} ---- {0}", PointsToString(adjx, adjy), x, y));
     }
 
@@ -111,13 +111,13 @@ public class TestRunner : MonoBehaviour
         Flower flower4 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.MUM, FlowerColour.YELLOW);
         Flower flower5 = FlowerColourLookup.lookup.GetFlowerWithColour(FlowerType.HYACINTH, FlowerColour.BLUE);
 
-        FlowerGrid.flowerGrid.AddFlower(flower1, 4, 4);
-        FlowerGrid.flowerGrid.AddFlower(flower2, 3, 4);
-        FlowerGrid.flowerGrid.AddFlower(flower3, 4, 3);
-        FlowerGrid.flowerGrid.AddFlower(flower4, 4, 6);
-        FlowerGrid.flowerGrid.AddFlower(flower5, 3, 5);
+        SimulationController.singleton.flowerGrid.AddFlower(flower1, 4, 4);
+        SimulationController.singleton.flowerGrid.AddFlower(flower2, 3, 4);
+        SimulationController.singleton.flowerGrid.AddFlower(flower3, 4, 3);
+        SimulationController.singleton.flowerGrid.AddFlower(flower4, 4, 6);
+        SimulationController.singleton.flowerGrid.AddFlower(flower5, 3, 5);
 
-        Dictionary<(int, int, int, int), int> gridSqs = FlowerGrid.flowerGrid.GetPossibleParents(FlowerType.MUM, 4, 5);
+        Dictionary<(int, int, int, int), int> gridSqs = SimulationController.singleton.flowerGrid.GetPossibleParents(FlowerType.MUM, 4, 5);
         foreach((int,int,int,int) gridSq in gridSqs.Keys)
         {
             Debug.Log(gridSq);
@@ -132,21 +132,21 @@ public class TestRunner : MonoBehaviour
         Flower flower3 = new Flower(new String[] { "210" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.PURPLE);
         Flower flower4 = new Flower(new String[] { "220", "221" }, new Fraction[] { new Fraction(1, 2), new Fraction(1, 2) }, FlowerType.MUM, FlowerColour.GREEN);
 
-        FlowerGrid.flowerGrid.AddFlower(flower1, 1, 1);
-        FlowerGrid.flowerGrid.AddFlower(flower2, 1, 0);
-        FlowerGrid.flowerGrid.AddFlower(flower3, 2, 2);
-        FlowerGrid.flowerGrid.AddFlower(flower4, 0, 3);
+        SimulationController.singleton.flowerGrid.AddFlower(flower1, 1, 1);
+        SimulationController.singleton.flowerGrid.AddFlower(flower2, 1, 0);
+        SimulationController.singleton.flowerGrid.AddFlower(flower3, 2, 2);
+        SimulationController.singleton.flowerGrid.AddFlower(flower4, 0, 3);
 
 
-        Dictionary<(int, int, int, int), int> gridSqs = FlowerGrid.flowerGrid.GetPossibleParents(FlowerType.MUM, 1, 2);
-        Dictionary<(int, int, int, int), Fraction> gridSqsLikli = FlowerGrid.flowerGrid.GetLiklihoodsOfParents(gridSqs, FlowerColour.GREEN);
+        Dictionary<(int, int, int, int), int> gridSqs = SimulationController.singleton.flowerGrid.GetPossibleParents(FlowerType.MUM, 1, 2);
+        Dictionary<(int, int, int, int), Fraction> gridSqsLikli = SimulationController.singleton.flowerGrid.GetLiklihoodsOfParents(gridSqs, FlowerColour.GREEN);
         foreach((int, int, int, int) gridSq in gridSqsLikli.Keys)
         {
             Debug.Log(gridSq);
             Debug.Log(gridSqsLikli[gridSq]);
         }
 
-        Dictionary<(int,int),List<(int,int,Fraction)>> flowerCombos = FlowerGrid.flowerGrid.GetCombosForEachFlower(gridSqsLikli);
+        Dictionary<(int,int),List<(int,int,Fraction)>> flowerCombos = SimulationController.singleton.flowerGrid.GetCombosForEachFlower(gridSqsLikli);
         foreach((int x, int y) in flowerCombos.Keys)
         {
             Debug.Log(String.Format("FLOWER AT {0},{1}", x, y));
@@ -165,15 +165,15 @@ public class TestRunner : MonoBehaviour
         Flower flower3 = new Flower(new String[] { "210" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.PURPLE);
         Flower flower4 = new Flower(new String[] { "220", "221" }, new Fraction[] { new Fraction(1, 2), new Fraction(1, 2) }, FlowerType.MUM, FlowerColour.GREEN);
 
-        FlowerGrid.flowerGrid.AddFlower(flower1, 1, 1);
-        FlowerGrid.flowerGrid.AddFlower(flower2, 1, 0);
-        FlowerGrid.flowerGrid.AddFlower(flower3, 2, 2);
-        FlowerGrid.flowerGrid.AddFlower(flower4, 0, 3);
+        SimulationController.singleton.flowerGrid.AddFlower(flower1, 1, 1);
+        SimulationController.singleton.flowerGrid.AddFlower(flower2, 1, 0);
+        SimulationController.singleton.flowerGrid.AddFlower(flower3, 2, 2);
+        SimulationController.singleton.flowerGrid.AddFlower(flower4, 0, 3);
 
 
-        FlowerGrid.flowerGrid.AddOffspring(FlowerType.MUM, FlowerColour.GREEN, 1, 2);
+        SimulationController.singleton.flowerGrid.AddOffspring(FlowerType.MUM, FlowerColour.GREEN, 1, 2);
 
-        Debug.Log(FlowerGrid.flowerGrid.GetFlower(1,2));
+        Debug.Log(SimulationController.singleton.flowerGrid.GetFlower(1,2));
 
     }
 
@@ -184,12 +184,12 @@ public class TestRunner : MonoBehaviour
         Flower flower3 = new Flower(new String[] { "210" }, new Fraction[] { new Fraction(1, 1) }, FlowerType.MUM, FlowerColour.PURPLE);
         Flower flower4 = new Flower(new String[] { "210", "211" }, new Fraction[] { new Fraction(1, 2), new Fraction(1, 2) }, FlowerType.MUM, FlowerColour.PURPLE);
 
-        FlowerGrid.flowerGrid.AddFlower(flower1, 1, 1);
-        FlowerGrid.flowerGrid.AddFlower(flower2, 2, 2);
-        FlowerGrid.flowerGrid.AddFlower(flower3, 1, 0);
-        FlowerGrid.flowerGrid.AddFlower(flower4, 0, 3);
+        SimulationController.singleton.flowerGrid.AddFlower(flower1, 1, 1);
+        SimulationController.singleton.flowerGrid.AddFlower(flower2, 2, 2);
+        SimulationController.singleton.flowerGrid.AddFlower(flower3, 1, 0);
+        SimulationController.singleton.flowerGrid.AddFlower(flower4, 0, 3);
 
-        FlowerGrid.flowerGrid.AddOffspring(FlowerType.MUM, FlowerColour.GREEN, 1, 2);
+        SimulationController.singleton.flowerGrid.AddOffspring(FlowerType.MUM, FlowerColour.GREEN, 1, 2);
 
     }
 

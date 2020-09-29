@@ -661,6 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e6d6bac5f212349931bb6b472d362a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridRenderer: {fileID: 1848231943}
   selectedFlower: {fileID: 0}
   currentGhost: {fileID: 0}
   guiOpen: 0
@@ -771,7 +772,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1848231942}
-  - component: {fileID: 1848231941}
   - component: {fileID: 1848231943}
   m_Layer: 0
   m_Name: Grid
@@ -780,22 +780,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1848231941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848231940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d759d2cbb567f0a48bc7d64185ba50db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlowerPrefab: {fileID: 1338478672031443887, guid: 73ef1bde5ffa14043957de10790b5321,
-    type: 3}
-  gridWidth: 10
-  gridHeight: 10
 --- !u!4 &1848231942
 Transform:
   m_ObjectHideFlags: 0
@@ -825,6 +809,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 6114715485785173312, guid: f709ca3f99ff09d48a45f5e6f7a2458d,
     type: 3}
   ghostTilePrefab: {fileID: 3835299680328170535, guid: 34d6b2716beeb8440961e03dd4788daa,
+    type: 3}
+  flowerPrefab: {fileID: 1338478672031443887, guid: 73ef1bde5ffa14043957de10790b5321,
     type: 3}
 --- !u!1 &2058773930
 GameObject:
@@ -1246,7 +1232,7 @@ PrefabInstance:
     - target: {fileID: 5141718210723999740, guid: bf01a1f5dbe198d48aa836aa54918463,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00001525269
+      value: 0.00001563613
       objectReference: {fileID: 0}
     - target: {fileID: 5141718210723999740, guid: bf01a1f5dbe198d48aa836aa54918463,
         type: 3}
@@ -1256,7 +1242,7 @@ PrefabInstance:
     - target: {fileID: 5141718210723999740, guid: bf01a1f5dbe198d48aa836aa54918463,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000000012198835
+      value: -0.000000759552
       objectReference: {fileID: 0}
     - target: {fileID: 8558092944598101486, guid: bf01a1f5dbe198d48aa836aa54918463,
         type: 3}

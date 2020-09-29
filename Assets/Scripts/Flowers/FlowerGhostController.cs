@@ -51,7 +51,7 @@ public class FlowerGhostController : MonoBehaviour, IInteractable
 
         if(place && !ClickDetector.clickDetector.overGUI)
         {
-            FlowerGrid.flowerGrid.AddAndRenderFlower(flower, newX, newY);
+            SimulationController.singleton.gridRenderer.AddAndRenderFlower(flower, newX, newY);
             place = false;
         }
     }
