@@ -6,6 +6,11 @@ public class SimulationController : MonoBehaviour
 {
     public static SimulationController singleton;
 
+    public FlowerGrid flowerGrid;
+
+    [SerializeField]
+    public GridRenderer gridRenderer;
+
     public FlowerController selectedFlower;
 
     public FlowerGhostController currentGhost;
@@ -15,6 +20,8 @@ public class SimulationController : MonoBehaviour
     private void Awake()
     {
         singleton = this;
+
+        flowerGrid = new FlowerGrid();
     }
 
     // Start is called before the first frame update
@@ -36,7 +43,10 @@ public class SimulationController : MonoBehaviour
         {
             return;
         }
+    }
 
-
+    private void OnApplicationQuit()
+    {
+        Destroy(singleton);
     }
 }

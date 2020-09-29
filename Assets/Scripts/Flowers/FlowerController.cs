@@ -43,7 +43,7 @@ public class FlowerController : MonoBehaviour, IInteractable
         transform.position = GridRenderer.GetWorldPos(x, y, 1, 1);
 
         //Adds itself to the grid
-        FlowerGrid.flowerGrid.AddFlower(flower, x, y);
+        SimulationController.singleton.flowerGrid.AddFlower(flower, x, y);
 
         //Get the correct image
         string imageName = flower.GetFilePath();
@@ -67,7 +67,7 @@ public class FlowerController : MonoBehaviour, IInteractable
             if (SimulationController.singleton.selectedFlower == this)
             {
                 SimulationController.singleton.ClearSelection();
-                FlowerGrid.flowerGrid.RemoveFlower(x, y);
+                SimulationController.singleton.flowerGrid.RemoveFlower(x, y);
                 Destroy(gameObject);
             }
         }
@@ -105,7 +105,7 @@ public class FlowerController : MonoBehaviour, IInteractable
             if (Input.GetMouseButtonUp(0))
             {
                 beingDragged = false;
-                if (!FlowerGrid.IsValidTilePlacement(newX, newY))
+                if (!SimulationController.singleton.flowerGrid.IsValidTilePlacement(newX, newY))
                 {
                     transform.position = GridRenderer.GetWorldPos(x, y, 1, 1);
                     return;
@@ -113,10 +113,10 @@ public class FlowerController : MonoBehaviour, IInteractable
 
                 transform.position = GridRenderer.GetWorldPos(newX, newY, 1, 1);
 
-                FlowerGrid.flowerGrid.RemoveFlower(x, y);
+                SimulationController.singleton.flowerGrid.RemoveFlower(x, y);
                 x = newX;
                 y = newY;
-                FlowerGrid.flowerGrid.AddFlower(flower, x, y);
+                SimulationController.singleton.flowerGrid.AddFlower(flower, x, y);
 
 
             }

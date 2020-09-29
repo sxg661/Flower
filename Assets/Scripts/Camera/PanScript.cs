@@ -16,9 +16,15 @@ public class PanScript : MonoBehaviour
 
     private void Start()
     {
-        xRange = (0, FlowerGrid.flowerGrid.gridWidth);
-        yRange = (0, FlowerGrid.flowerGrid.gridHeight);
-        Vector3 gridCentre = GridRenderer.GetWorldPos(0, 0, FlowerGrid.flowerGrid.gridWidth, FlowerGrid.flowerGrid.gridHeight);
+        xRange = (0, SimulationController.singleton.flowerGrid.gridWidth);
+        yRange = (0, SimulationController.singleton.flowerGrid.gridHeight);
+
+        Vector3 gridCentre = GridRenderer.GetWorldPos(
+            0, 
+            0, 
+            SimulationController.singleton.flowerGrid.gridWidth,
+            SimulationController.singleton.flowerGrid.gridHeight);
+
         transform.position = new Vector3(gridCentre.x, gridCentre.y, transform.position.z);
     }
 

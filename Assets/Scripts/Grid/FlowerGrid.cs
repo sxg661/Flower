@@ -4,10 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
-public class FlowerGrid : MonoBehaviour
+public class FlowerGrid
 {
-
-    public static FlowerGrid flowerGrid;
 
     [SerializeField]
     GameObject FlowerPrefab;
@@ -20,18 +18,18 @@ public class FlowerGrid : MonoBehaviour
 
     Flower[][] grid;
 
-    public static bool InGrid(int x, int y)
+    public bool InGrid(int x, int y)
     {
-        return x >= 0 && x < flowerGrid.gridWidth && y >= 0 && y < flowerGrid.gridHeight;
+        return x >= 0 && x < gridWidth && y >= 0 && y < gridHeight;
     }
-    public static bool IsValidTilePlacement(int x, int y)
+    public bool IsValidTilePlacement(int x, int y)
     {
         if (!InGrid(x, y))
         {
             return false;
         }
 
-        return (flowerGrid.GetFlower(x, y).type == FlowerType.NONE);
+        return (GetFlower(x, y).type == FlowerType.NONE);
     }
 
 
@@ -41,7 +39,7 @@ public class FlowerGrid : MonoBehaviour
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public static (List<int>, List<int>) getAdjacentSquares(int x, int y)
+    public (List<int>, List<int>) getAdjacentSquares(int x, int y)
     {
         int[] xadj = new int[] { x - 1, x - 1, x - 1, x, x + 1, x + 1, x + 1, x };
         int[] yadj = new int[] { y - 1, y, y + 1, y + 1, y + 1, y, y - 1, y - 1 };
@@ -66,17 +64,10 @@ public class FlowerGrid : MonoBehaviour
 
     }
 
-    private void Awake()
-    {
-        flowerGrid = this;
-        InitialiseGrid();
-
-    }
-
     /// <summary>
     /// Initiliase a grid of empty flowers with dimensions GRIDWIDTH by GRIDHEIGHT.
     /// </summary>
-    public void InitialiseGrid()
+    public FlowerGrid()
     {
         grid = new Flower[gridHeight][];
 
@@ -94,23 +85,6 @@ public class FlowerGrid : MonoBehaviour
         return grid[y][x];
     }
 
-    /// <summary>
-    /// Adds a flower to a point in the grid and renders it too on the grid.
-    /// </summary>
-    /// <param name="flower"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public bool AddAndRenderFlower(Flower flower, int x, int y)
-    {
-        if (AddFlower(flower, x, y))
-        {
-            GameObject flowerObj = Instantiate(FlowerPrefab, new Vector3(0, 0, 5), Quaternion.identity);
-            flowerObj.GetComponent<FlowerController>().GiveDetails(flower, x, y);
-            return true;
-        }
-        return false;
-    }
 
     /// <summary>
     /// Add a flower to a point in the grid.
@@ -491,7 +465,8 @@ public class FlowerGrid : MonoBehaviour
         }
 
         return combosForFlowers;
-    } 
+    }
+
 
 
 

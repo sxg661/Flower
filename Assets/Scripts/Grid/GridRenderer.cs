@@ -24,6 +24,9 @@ public class GridRenderer : MonoBehaviour
     [SerializeField]
     GameObject ghostTilePrefab;
 
+    [SerializeField]
+    GameObject flowerPrefab;
+
 
     //no ghosts for now, might have them in the future though!
     bool showGhosts = false;
@@ -38,9 +41,9 @@ public class GridRenderer : MonoBehaviour
     void Start()
     {
         //render the supermarket floor
-        for (int x = 0; x < FlowerGrid.flowerGrid.gridWidth; x++)
+        for (int x = 0; x < SimulationController.singleton.flowerGrid.gridWidth; x++)
         {
-            for (int y = 0; y < FlowerGrid.flowerGrid.gridHeight; y++)
+            for (int y = 0; y < SimulationController.singleton.flowerGrid.gridHeight; y++)
             {
                Instantiate(tilePrefab, GetWorldPos(x, y, 1, 1), Quaternion.identity);
                
@@ -53,6 +56,24 @@ public class GridRenderer : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Adds a flower to a point in the grid and renders it too on the grid.
+    /// </summary>
+    /// <param name="flower"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public bool AddAndRenderFlower(Flower flower, int x, int y)
+    {
+        if (SimulationController.singleton.flowerGrid.AddFlower(flower, x, y))
+        {
+            GameObject flowerObj = Instantiate(flowerPrefab, new Vector3(0, 0, 5), Quaternion.identity);
+            flowerObj.GetComponent<FlowerController>().GiveDetails(flower, x, y);
+            return true;
+        }
+        return false;
+    }
+
 
     void AddGhosts()
     {
@@ -60,9 +81,12 @@ public class GridRenderer : MonoBehaviour
 
 
         Pointer<bool> rowHover = new Pointer<bool>(false);
-        for (int x = 0; x < FlowerGrid.flowerGrid.gridWidth; x++)
+        for (int x = 0; x < SimulationController.singleton.flowerGrid.gridWidth; x++)
         {
-            GameObject ghost = Instantiate(ghostTilePrefab, GetWorldPos(x, FlowerGrid.flowerGrid.gridHeight, 1, 1), Quaternion.identity);
+            GameObject ghost = Instantiate(ghostTilePrefab, 
+                GetWorldPos(x, SimulationController.singleton.flowerGrid.gridHeight, 1, 1), 
+                Quaternion.identity);
+
             ghost.GetComponent<GhostTileController>().Init(this, rowClick, rowHover);
             ghostTiles.Add(ghost);
         }
@@ -70,9 +94,12 @@ public class GridRenderer : MonoBehaviour
 
         columnClick.value = false;
         Pointer<bool> columnHover = new Pointer<bool>(false);
-        for (int y = 0; y < FlowerGrid.flowerGrid.gridHeight; y++)
+        for (int y = 0; y < SimulationController.singleton.flowerGrid.gridHeight; y++)
         {
-            GameObject ghost = Instantiate(ghostTilePrefab, GetWorldPos(FlowerGrid.flowerGrid.gridWidth, y, 1, 1), Quaternion.identity);
+            GameObject ghost = Instantiate(ghostTilePrefab, 
+                GetWorldPos(SimulationController.singleton.flowerGrid.gridWidth, y, 1, 1), 
+                Quaternion.identity);
+
             ghost.GetComponent<GhostTileController>().Init(this, columnClick, columnHover);
             ghostTiles.Add(ghost);
         }
@@ -101,21 +128,21 @@ public class GridRenderer : MonoBehaviour
 
     void AddRow()
     {
-        for(int x = 0; x < FlowerGrid.flowerGrid.gridWidth; x++)
+        for(int x = 0; x < SimulationController.singleton.flowerGrid.gridWidth; x++)
         {
-            Instantiate(tilePrefab, GetWorldPos(x, FlowerGrid.flowerGrid.gridHeight, 1, 1), Quaternion.identity);
+            Instantiate(tilePrefab, GetWorldPos(x, SimulationController.singleton.flowerGrid.gridHeight, 1, 1), Quaternion.identity);
         }
-        FlowerGrid.flowerGrid.gridHeight += 1;
+        SimulationController.singleton.flowerGrid.gridHeight += 1;
         //TODO I NEED TO DO MORE HERE TO MAKE THERE BE SPACE FOR FLOWERS IN THESE SQUARES!!!!
     }
 
     void AddColumn()
     {
-        for(int y = 0; y < FlowerGrid.flowerGrid.gridHeight; y++)
+        for(int y = 0; y < SimulationController.singleton.flowerGrid.gridHeight; y++)
         {
-            Instantiate(tilePrefab, GetWorldPos(FlowerGrid.flowerGrid.gridWidth, y, 1, 1), Quaternion.identity);
+            Instantiate(tilePrefab, GetWorldPos(SimulationController.singleton.flowerGrid.gridWidth, y, 1, 1), Quaternion.identity);
         }
-        FlowerGrid.flowerGrid.gridWidth += 1;
+        SimulationController.singleton.flowerGrid.gridWidth += 1;
         //TODO SOME AS ABOVE FUNCTION
     }
 
