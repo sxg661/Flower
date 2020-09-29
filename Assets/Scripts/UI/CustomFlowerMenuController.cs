@@ -41,12 +41,6 @@ public class CustomFlowerMenuController : MonoBehaviour
     [SerializeField]
     GameObject flowerPanelPrefab;
 
-    [SerializeField]
-    Color optionSelectedColour;
-
-    [SerializeField]
-    Color optionUnselectedColour;
-
     List<Action> openPageActions;
     int currentPage;
 
@@ -82,7 +76,7 @@ public class CustomFlowerMenuController : MonoBehaviour
 
         currentPage = 0;
         myFlower = null;
-        doneButtonText.text = "Next";
+        doneButton.gameObject.SetActive(false);
 
         backButton.interactable = false;
 
@@ -117,7 +111,7 @@ public class CustomFlowerMenuController : MonoBehaviour
 
             if (newPage == openPageActions.Count - 1)
             {
-                doneButtonText.text = "Done";
+                doneButton.gameObject.SetActive(true);
             }
 
             currentPage = newPage;
@@ -140,7 +134,7 @@ public class CustomFlowerMenuController : MonoBehaviour
             backButton.interactable = false;
         }
 
-        doneButtonText.text = "Next";
+        doneButton.gameObject.SetActive(false);
 
         currentPage = newPage;
         openPageActions[currentPage]();
@@ -162,31 +156,15 @@ public class CustomFlowerMenuController : MonoBehaviour
         scrollMenuContents = new List<GameObject>();
     }
 
-    private void ChangeButtonColour(Button button, Color colour)
+
+
+    private void HandleButtonClick(FlowerPanelController controller)
     {
-        ColorBlock colours = button.colors;
-        colours.normalColor = colour;
-        button.colors = colours;
-    }
-
-    private void ClearSelection()
-    {
-        if (selectedButton != null)
-        {
-            ChangeButtonColour(selectedButton, optionUnselectedColour);
-        }
-
-    }
-
-    private void HandleButtonClick(Button button, FlowerPanelController controller)
-    {
-        ClearSelection();
-
-        ChangeButtonColour(button, optionSelectedColour);
-        selectedButton = button;
 
         myType = controller.flower.type;
         myColour = controller.flower.colour;
+
+        NextPage();
         
 
     }
@@ -194,7 +172,6 @@ public class CustomFlowerMenuController : MonoBehaviour
     private void ChooseType()
     {
         ClearScrollMenu();
-        ClearSelection();
 
         scrollMenuObject.SetActive(true);
         geneUI.SetActive(false);
@@ -212,13 +189,12 @@ public class CustomFlowerMenuController : MonoBehaviour
             GameObject panel = Instantiate(flowerPanelPrefab, scrollContentsObj.transform);
             FlowerPanelController controller = panel.GetComponent<FlowerPanelController>();
             Button button = panel.GetComponent<Button>();
-            ChangeButtonColour(button, optionUnselectedColour);
 
             controller.GiveInfo(
                 scrollMenuWidth, 
                 flower, 
                 Flower.FormatCases(type.ToString()), 
-                () => HandleButtonClick(button, controller));
+                () => HandleButtonClick(controller));
             
 
             scrollMenuContents.Add(panel);
@@ -230,7 +206,6 @@ public class CustomFlowerMenuController : MonoBehaviour
     private void ChooseColour()
     {
         ClearScrollMenu();
-        ClearSelection();
 
         List<FlowerColour> colours = FlowerColourLookup.lookup.geneLookup[myType].Keys.ToList();
         foreach(FlowerColour flowerCol in colours)
@@ -239,13 +214,12 @@ public class CustomFlowerMenuController : MonoBehaviour
             GameObject panel = Instantiate(flowerPanelPrefab, scrollContentsObj.transform);
             FlowerPanelController controller = panel.GetComponent<FlowerPanelController>();
             Button button = panel.GetComponent<Button>();
-            ChangeButtonColour(button, optionUnselectedColour);
 
             controller.GiveInfo(
                     scrollMenuWidth,
                     flower,
                     Flower.FormatCases(flower.GetName()),
-                    () => HandleButtonClick(button, controller));
+                    () => HandleButtonClick(controller));
             
             scrollMenuContents.Add(panel);
 

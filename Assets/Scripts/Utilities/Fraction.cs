@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public struct Fraction
 {
@@ -9,9 +10,24 @@ public struct Fraction
     
     public Fraction(int numer, int denom)
     {
-        int hcf = HCF(numer, denom);
-        numerator = numer/hcf;
-        denominator = denom/hcf;
+        numerator = numer;
+        denominator = denom;
+        Simplify();
+    }
+
+    public Fraction(float dec)
+    {
+        float remain = dec % 1;
+        int power10 = dec.ToString().Substring(2).Length;
+
+        float den = Mathf.Pow(10f, power10);
+        float num = (dec * den);
+
+        denominator = (int)den;
+        numerator = (int)num;
+
+        Simplify();
+
     }
 
     public bool IsSame(Fraction other)
@@ -22,15 +38,22 @@ public struct Fraction
 
     public float GetDecimal()
     {
-        float num = numerator;
-        float denom = denominator;
-        return num / denom;
+        double num = numerator;
+        double denom = denominator;
+        return (float) (num / denom);
     }
 
 
     public override string ToString()
     {
         return string.Format("{0}/{1}", numerator, denominator);
+    }
+
+    public void Simplify()
+    {
+        int hcf = HCF(numerator, denominator);
+        numerator = numerator / hcf;
+        denominator = denominator / hcf;
     }
 
     private static int HCF(int a, int b)
@@ -46,6 +69,7 @@ public struct Fraction
 
         return a == 0 ? b : a;
     }
+
 
     public static Fraction Simplify(Fraction f)
     {
