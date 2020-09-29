@@ -46,7 +46,7 @@ public class ClickDetector : MonoBehaviour
         }
         overGUI = system.IsPointerOverGameObject() || SimulationController.singleton.guiOpen;
         destroy = Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Delete);
-        escape = Input.GetKeyDown(KeyCode.Escape);
+        escape = Input.GetKeyDown(KeyCode.Escape) || UnityEngine.Input.GetMouseButtonDown(1);
     }
 
     void FixedUpdate()
