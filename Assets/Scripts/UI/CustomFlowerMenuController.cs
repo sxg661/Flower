@@ -24,6 +24,9 @@ public class CustomFlowerMenuController : MonoBehaviour
     GameObject scrollContentsObj;
 
     [SerializeField]
+    GameObject geneScrollMenuCotents;
+
+    [SerializeField]
     GameObject geneUI;
 
     [SerializeField]
@@ -40,6 +43,9 @@ public class CustomFlowerMenuController : MonoBehaviour
 
     [SerializeField]
     GameObject flowerPanelPrefab;
+
+    [SerializeField]
+    GameObject genePanelPrefab;
 
     List<Action> openPageActions;
     int currentPage;
@@ -228,7 +234,7 @@ public class CustomFlowerMenuController : MonoBehaviour
         scrollMenuPanel.SetActive(true);
         geneUI.SetActive(false);
 
-        titleText.text = string.Format("Choose {0} Colour", Flower.FormatCases(myType.ToString()));
+        titleText.text = "Choose Colour";
     }
 
     private void CustomiseGenes()
@@ -236,12 +242,28 @@ public class CustomFlowerMenuController : MonoBehaviour
         scrollMenuPanel.SetActive(false);
         geneUI.SetActive(true);
 
+        ClearScrollMenu();
+
         myFlower = FlowerColourLookup.lookup.GetFlowerWithColour(myType, myColour);
 
         Sprite sprite = Resources.Load<Sprite>(myFlower.GetFilePath());
         geneUIImage.sprite = sprite;
 
         titleText.text = myFlower.GetName();
+
+        for(int i = 0; i < myFlower.genesPoss.Length; i++)
+        {
+            GameObject genePanel = Instantiate(genePanelPrefab, geneScrollMenuCotents.transform);
+            var controller = genePanel.GetComponent<GenePanelInteractableController>();
+
+            controller.SetGeneCode(myFlower.genesPoss[i], myFlower.type);
+            controller.SetProb(myFlower.genesProbs[i]);
+            controller.SetWidth(scrollMenuWidth - 10);
+
+            scrollMenuContents.Add(genePanel);
+
+
+        }
     }
 
 

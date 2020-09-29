@@ -28,10 +28,29 @@ public class GenePanelInteractableController : MonoBehaviour
 
     bool error;
 
+    RectTransform rTransform;
+
     public void SetGeneCode(Gene[] genes, FlowerType type)
     {
         geneCode = genes;
         geneCodeText.text = Gene.FormatForGUI(genes, type);
+    }
+
+    public void SetProb(Fraction prob)
+    {
+        liklihood = prob;
+        textField.text = prob.ToString();
+        perecentageText.text = perecentageText.text = string.Format("{0:P2}", liklihood.GetDecimal());
+    }
+
+    public void SetWidth(int width)
+    {
+        if (rTransform == null)
+        {
+            rTransform = GetComponent<RectTransform>();
+        }
+
+        rTransform.sizeDelta = new Vector2(width, rTransform.rect.height);
     }
 
     private void Awake()
@@ -42,7 +61,6 @@ public class GenePanelInteractableController : MonoBehaviour
 
     private void Start()
     {
-
         //TEST
         SetGeneCode(new Gene[] { new Gene('2'), new Gene('1'), new Gene('0') }, FlowerType.COSMOS);
     }

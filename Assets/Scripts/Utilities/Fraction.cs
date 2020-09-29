@@ -18,7 +18,14 @@ public struct Fraction
     public Fraction(float dec)
     {
         float remain = dec % 1;
-        int power10 = dec.ToString().Substring(2).Length;
+
+        int power10 = 0;
+        if (remain != 0)
+        {
+            power10 = dec.ToString().Substring(2).Length;
+        }
+
+
 
         float den = Mathf.Pow(10f, power10);
         float num = (dec * den);
