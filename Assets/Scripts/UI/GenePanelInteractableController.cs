@@ -23,12 +23,13 @@ public class GenePanelInteractableController : MonoBehaviour
     [SerializeField]
     Text perecentageText;
 
-    [SerializeField]
     Fraction liklihood;
 
     bool error;
 
     RectTransform rTransform;
+
+    readonly int MAX_INPUT = 1000;
 
     public void SetGeneCode(Gene[] genes, FlowerType type)
     {
@@ -36,11 +37,25 @@ public class GenePanelInteractableController : MonoBehaviour
         geneCodeText.text = Gene.FormatForGUI(genes, type);
     }
 
+    public Gene[] GetGenes()
+    {
+        return geneCode;
+    }
+
     public void SetProb(Fraction prob)
     {
+        if(prob.denominator > 100)
+        {
+            prob.RoundToDenom(100);
+        }
         liklihood = prob;
         textField.text = prob.ToString();
         perecentageText.text = perecentageText.text = string.Format("{0:P2}", liklihood.GetDecimal());
+    }
+
+    public Fraction GetProb()
+    {
+        return liklihood;
     }
 
     public void SetWidth(int width)
@@ -70,6 +85,13 @@ public class GenePanelInteractableController : MonoBehaviour
         textField.image.color = colour;
     }
 
+    public void Error(string message)
+    {
+        SetFieldCol(errorColour);
+        error = true;
+        perecentageText.text = message;
+    }
+
     readonly Regex fractionRegEx = new Regex(@"^([0-9]+\/[0-9]+)$");
     readonly Regex decimalRegEx = new Regex(@"^([0-9]*(\.[0-9]*)?)$");
 
@@ -80,37 +102,44 @@ public class GenePanelInteractableController : MonoBehaviour
 
     public void OnExit()
     {
-        Debug.Log("hi");
+        Fraction newLiklihood = new Fraction(0, 0);
         string currentText = textField.text;
         if (fractionRegEx.Match(currentText).Length > 0)
         {
             int slashIndex = currentText.IndexOf("/");
-            int numer = int.Parse(currentText.Substring(0, slashIndex));
-            int denom = int.Parse(currentText.Substring(slashIndex + 1));
+            long numer = long.Parse(currentText.Substring(0, slashIndex));
+            long denom = long.Parse(currentText.Substring(slashIndex + 1));
 
-            liklihood = new Fraction(numer, denom);
+            if (numer * denom > MAX_INPUT)
+            {
+                Error("Too Large");
+                return;
+            }
+
+            newLiklihood = new Fraction(numer, denom);
         }
         else if(decimalRegEx.Match(currentText).Length > 0)
         {
             if(currentText != ".")
             {
-                float value = float.Parse(currentText);
-                liklihood = new Fraction(value);
+                double value = double.Parse(currentText);
+                if (value > MAX_INPUT)
+                {
+                    Error("Too Large");
+                    return;
+                }
+                newLiklihood = new Fraction(value);
             }
         }
         else
         {
-            SetFieldCol(errorColour);
-            error = true;
-            perecentageText.text = "Error";
+            Error("Bad Format");
             return;
         }
 
+
         error = false;
-        textField.text = liklihood.ToString();
-        perecentageText.text = string.Format("{0:P2}", liklihood.GetDecimal());
-
-
+        SetProb(newLiklihood);
     }
 }
 

@@ -266,6 +266,32 @@ public class CustomFlowerMenuController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Normlise the list of genes in the gene scroll menu (if there are any) so that they add up to 1.
+    /// </summary>
+    public void NormaliseGenes()
+    {
+
+        List<Fraction> liklihoods = new List<Fraction>();
+        var geneControllers = new List<GenePanelInteractableController>();
+        foreach(GameObject obj in scrollMenuContents)
+        {
+            var geneController = obj.GetComponent<GenePanelInteractableController>();
+            if (geneController != null)
+            {
+                liklihoods.Add(geneController.GetProb());
+                geneControllers.Add(geneController);
+            }
+        }
+
+        Fraction[] liklihoodsNorm = Fraction.Round(Fraction.Normalise(liklihoods.ToArray()));
+        for(int i = 0; i < liklihoodsNorm.Length; i++)
+        {
+            geneControllers[i].SetProb(liklihoodsNorm[i]);
+        }
+
+    }
+
 
 
 }
