@@ -29,7 +29,7 @@ public class GenePanelInteractableController : MonoBehaviour
 
     RectTransform rTransform;
 
-    readonly int MAX_INPUT = 1000;
+    readonly int MAX_INPUT = 100;
 
     public void SetGeneCode(Gene[] genes, FlowerType type)
     {
@@ -40,6 +40,15 @@ public class GenePanelInteractableController : MonoBehaviour
     public Gene[] GetGenes()
     {
         return geneCode;
+    }
+
+    /// <summary>
+    /// Returns true if there is an error
+    /// </summary>
+    /// <returns></returns>
+    public bool HasError()
+    {
+        return error;
     }
 
     public void SetProb(Fraction prob)
@@ -85,11 +94,14 @@ public class GenePanelInteractableController : MonoBehaviour
         textField.image.color = colour;
     }
 
-    public void Error(string message)
+    public void Error(string message = null)
     {
         SetFieldCol(errorColour);
         error = true;
-        perecentageText.text = message;
+        if(message != null)
+        {
+           perecentageText.text = message;
+        }
     }
 
     readonly Regex fractionRegEx = new Regex(@"^([0-9]+\/[0-9]+)$");
@@ -110,7 +122,7 @@ public class GenePanelInteractableController : MonoBehaviour
             long numer = long.Parse(currentText.Substring(0, slashIndex));
             long denom = long.Parse(currentText.Substring(slashIndex + 1));
 
-            if (numer * denom > MAX_INPUT)
+            if (numer / denom > 1)
             {
                 Error("Too Large");
                 return;
@@ -123,9 +135,9 @@ public class GenePanelInteractableController : MonoBehaviour
             if(currentText != ".")
             {
                 double value = double.Parse(currentText);
-                if (value > MAX_INPUT)
+                if (value > 1)
                 {
-                    Error("Too Large");
+                    Error("Too large");
                     return;
                 }
                 newLiklihood = new Fraction(value);

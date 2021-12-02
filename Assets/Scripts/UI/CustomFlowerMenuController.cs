@@ -47,6 +47,12 @@ public class CustomFlowerMenuController : MonoBehaviour
     [SerializeField]
     GameObject genePanelPrefab;
 
+    [SerializeField]
+    Text errorText;
+
+    [SerializeField]
+    GameObject ghostFlowerPrefab;
+
     List<Action> openPageActions;
     int currentPage;
 
@@ -57,11 +63,6 @@ public class CustomFlowerMenuController : MonoBehaviour
 
     private void Awake()
     {
-        //TEMPORARY------------------------------
-
-        myType = FlowerType.COSMOS;
-        myColour = FlowerColour.YELLOW;
-        //---------------------------------------
     }
 
     public void Open()
@@ -93,6 +94,9 @@ public class CustomFlowerMenuController : MonoBehaviour
         SimulationController.singleton.guiOpen = true;
         SimulationController.singleton.currentGhost = null;
         SimulationController.singleton.selectedFlower = null;
+
+        //no error text to start with
+        errorText.text = "";
     }
 
     public void Close()
@@ -102,15 +106,45 @@ public class CustomFlowerMenuController : MonoBehaviour
         SimulationController.singleton.guiOpen = false;
     }
 
+    /// <summary>
+    /// Go to the next page if there is one, or if at end of menu create flower and close menu
+    /// </summary>
     public void NextPage()
     {
         int newPage = currentPage + 1;
 
+        //if on last page, finialise flower and exit menu
         if(newPage >= openPageActions.Count)
         {
-            CreateFlower();
-            Close();
+            //loop through scroll items and get the sum of their probabilities and whether or not there are any errors
+            Fraction total = new Fraction(0, 0);
+            bool noErrors = true;
+            foreach(GameObject item in scrollMenuContents)
+            {
+                GenePanelInteractableController genePanelCntrl = item.GetComponent<GenePanelInteractableController>();
+                total += genePanelCntrl.GetProb();
+                noErrors = noErrors && !genePanelCntrl.HasError();
+            }
+
+            //if no errors
+            if(total.GetDecimal() == 1 && noErrors)
+            {
+                CreateFlower();
+                Close();
+            }
+            //if a format error
+            else if(!noErrors)
+            {
+                //display error text
+                errorText.text = "Incorrect input format - must be fraction in format '<d>/<n>'";
+            }
+            //if liklihoods do not sum to the correct number
+            else if(total.GetDecimal() != 1)
+            {
+                errorText.text = "Liklihoods must add to one";
+            }
         }
+        //if not on last page, move to the next page
         else
         {
             backButton.interactable = true;
@@ -147,10 +181,31 @@ public class CustomFlowerMenuController : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Create a flower based on the inputs entered by the user on each screen of the menu
+    /// </summary>
     private void CreateFlower()
     {
+        //from the final screen, work out the gene poss and probs
+        Gene[][] genePoss = new Gene[scrollMenuContents.Count()][];
+        Fraction[] geneProbs = new Fraction[scrollMenuContents.Count()];
+        for(int i = 0; i < scrollMenuContents.Count; i++)
+        {
+            //get the panel controller
+            GameObject genePanel = scrollMenuContents[i];
+            GenePanelInteractableController genePanelCntrl = genePanel.GetComponent<GenePanelInteractableController>();
 
+            //add the possibilties and liklihoods to the list
+            genePoss[i] = genePanelCntrl.GetGenes();
+            geneProbs[i] = genePanelCntrl.GetProb();
+        }
+
+        //now create the flower
+        myFlower = new Flower(genePoss, geneProbs, myType, myColour);
+
+        //render the flower as a ghost
+        GameObject obj = Instantiate(ghostFlowerPrefab, Vector3.zero, Quaternion.identity);
+        obj.GetComponent<FlowerGhostController>().flower = myFlower;
     }
 
     private void ClearScrollMenu()
@@ -163,16 +218,16 @@ public class CustomFlowerMenuController : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Called when button is clicked on
+    /// </summary>
+    /// <param name="controller"></param>
     private void HandleButtonClick(FlowerPanelController controller)
     {
-
         myType = controller.flower.type;
         myColour = controller.flower.colour;
 
         NextPage();
-        
-
     }
 
     private void ChooseType()
@@ -261,35 +316,7 @@ public class CustomFlowerMenuController : MonoBehaviour
             controller.SetWidth(scrollMenuWidth - 10);
 
             scrollMenuContents.Add(genePanel);
-
-
         }
-    }
-
-    /// <summary>
-    /// Normlise the list of genes in the gene scroll menu (if there are any) so that they add up to 1.
-    /// </summary>
-    public void NormaliseGenes()
-    {
-
-        List<Fraction> liklihoods = new List<Fraction>();
-        var geneControllers = new List<GenePanelInteractableController>();
-        foreach(GameObject obj in scrollMenuContents)
-        {
-            var geneController = obj.GetComponent<GenePanelInteractableController>();
-            if (geneController != null)
-            {
-                liklihoods.Add(geneController.GetProb());
-                geneControllers.Add(geneController);
-            }
-        }
-
-        Fraction[] liklihoodsNorm = Fraction.Round(Fraction.Normalise(liklihoods.ToArray()));
-        for(int i = 0; i < liklihoodsNorm.Length; i++)
-        {
-            geneControllers[i].SetProb(liklihoodsNorm[i]);
-        }
-
     }
 
 
